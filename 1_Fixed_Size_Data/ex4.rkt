@@ -17,7 +17,7 @@
 
 (delete-letter natural-number) 
 
-; 参考别人的思路
+; 参考别人思路
 (define str "hello-world")
 (define i 5)
 (define (string-del str i)
