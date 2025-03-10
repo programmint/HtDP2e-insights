@@ -8,4 +8,4 @@
 
 (string-insert "Htdp2e" 4)
 
-; 考察 substring
+; 考察 substring 用法

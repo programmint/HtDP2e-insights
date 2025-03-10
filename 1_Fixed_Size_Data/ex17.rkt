@@ -8,6 +8,6 @@
 
 (image-classify img) 
 
-; 考察 image-height 和 image-width , 以及 cond
+; 考察 image-height 和 image-width , 以及 cond 语句
 
 

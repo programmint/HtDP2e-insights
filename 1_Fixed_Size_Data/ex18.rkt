@@ -5,6 +5,6 @@
 
 (string-join "Htdp" "2e") 
 
-; 考察定义函数，以及 string-append 
+; 考察定义函数，以及 string-append 用法
 
 
