@@ -20,12 +20,12 @@
 ; 参考思路
 (define str "hello-world")
 (define i 5)
-(define (string-del str i) 
+(define (string-del str i)
     (string-append (substring str 0 i ) (substring str i+1)))
         
-    ; 假如定义 i = 100 ，结果显然不合理。
+; 假如定义 i = 100 ，结果显然不合理。
 
-; 问题
+; 思路
 ; 题目问：哪些 i 的值合法？判断 i 值是不是合理，才是题目的重点。
 ; i 的值，大于、小于、等于字符串的长度，才合理。
 ; substing 的字符串顺序从 0 开始，不是从 1 开始，这里注意。
