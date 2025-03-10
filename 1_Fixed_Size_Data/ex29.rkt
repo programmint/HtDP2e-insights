@@ -5,7 +5,7 @@
 (define MARGINAL-ATTENDES 15) ;边际人数，指人数受价格影响，增加或减少的人数，这词汇来源于经济学
 
 (define CURRENT-PRICE 5) ;定义当前票价
-(define MARGINAL-PRICE 0.10) ;定义边际票价，1美元 = 100 美分，所以小数点后两位数字。
+(define MARGINAL-PRICE 0.10) ;定义边际票价，1美元 = 100 美分，所以小数点后两位数字
 
 (define FIXED-COSTS 0) 
 ; 定义固定成本为 0 ，因为是顺接上面的题目，所以保留了这个值，好处是不会改动下面的函数
@@ -15,7 +15,7 @@
 ; 这里也反应了程序设计的一个特点，要理解需求。
 
 (define MARGINAL-COST 1.50)
-;定义边际成本，1美元 = 100 美分，所以小数点后两位数字。
+;定义边际成本，1美元 = 100 美分，所以小数点后两位数字
 
 ; functions
 (define (attendees ticket-price) ;定义到场人数
