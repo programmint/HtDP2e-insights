@@ -20,6 +20,7 @@
     (rectangle RED-SIGN-WIDTH (RED-SIGN-HEIGHT ws) "solid" "red"))
 
 ; ws 数值不断变化，取  (/ ws 100) 的比例，然后再与 BACKGROUND-HEIGHT 相乘，得出红色标识的高度
+; 这一步比较重要
 
 ; 定义快乐指数函数
 ; image -> image 
