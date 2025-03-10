@@ -3,7 +3,7 @@
 ; tl : TrafficLight
 ; cs : current-state
 
-; 交通灯三种状态
+; 交通灯三种状态（字符串形式）
 (define RED "red")
 (define GREEN "green")
 (define YELLOW "yellow")
