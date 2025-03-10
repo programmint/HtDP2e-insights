@@ -3,12 +3,12 @@
 ; tl : TrafficLight
 ; cs : current-state
 
-; == 交通灯三种状态（字符串）
+; 交通灯三种状态（字符串）
 (define RED "red")
 (define GREEN "green")
 (define YELLOW "yellow")
 
-; == 单一交通灯图像
+; 单一交通灯图像
 ; nubmer -> image
 (define TL-RED (circle  20 "solid" "red"))
 (define TL-YELLOW (circle  20 "solid" "yellow"))
