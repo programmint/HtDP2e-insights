@@ -14,14 +14,30 @@
 
 ; A Posn represents the state of the world
 
+; 画布尺寸
+(define CANVAS-WIDTH 300)
+(define CANVAS-HEIGHT 300)
+
+; 红点半径
+(define DOT-RADIUS 3)
+
+; 提示文案文字大小及位置
+(define TEXT-FONT-SIZE 14)
+(define REMIND-MSG-X 150)
+(define REMIND-MSG-Y 150)
+
+; 红点宽度限制
+(define MAX-DOT-X (- CANVAS-WIDTH DOT-RADIUS))  ; 有效宽度 <= 297
+(define STOP-X-THRESHOLD (+ 1 MAX-DOT-X))  ; 超出有效宽度限制 = 298
+
 ; 图形常量
 ; number->image
-(define MTS (empty-scene 300 300))
-(define DOT (circle 3 "solid" "red"))
+(define MTS (empty-scene CANVAS-WIDTH CANVAS-HEIGHT))
+(define DOT (circle DOT-RADIUS "solid" "red"))
 
 ; 提醒文案常量
 (define REMIND-MSG 
-  (place-image (text "程序已停止" 14 "red") 150 150 MTS))
+  (place-image (text "程序已停止" TEXT-FONT-SIZE "red") REMIND-MSG-X REMIND-MSG-Y MTS))
 
 ; 更新器函数
 ; 时钟函数的子函数
@@ -64,7 +80,7 @@
 
 (define (reset-dot p x y me)
   (cond
-    [(mouse=? me "button-down") (make-posn x y)]
+    [(mouse=? "button-down" me) (make-posn x y)]
     [else p]))
 
   ; 注
@@ -76,10 +92,9 @@
   ; 但这样子，代码相对麻烦，而且这一点，也不是本题的重点，所以，还是采用书上的方法。
 
 ; 游戏核心逻辑
-; 红点位于背景内，实时渲染，即：红点圆心所在位置 [0，297]，合理范围，即位于背景内
-; 红点半径为 3
-; 红点圆心位于 (297，298] ，显示提示文案 
-; 红点圆心 x 值 > 298 ，停止游戏
+; 红点位于背景内，实时渲染，即：红点圆心所在位置 [0，MAX-DOT-X]，合理范围，即位于背景内
+; 红点圆心位于 (MAX-DOT-X，STOP-X-THRESHOLD] ，显示提示文案 
+; 红点圆心 x 值 > STOP-X-THRESHOLD ，停止游戏
 
 ; posn-> image 
 (check-expect (scene+dot (make-posn 30 20))
@@ -89,19 +104,18 @@
   (place-image DOT (posn-x p) (posn-y p) MTS))
 
 (check-expect (in-bounds? (make-posn 0 0)) #true)
-(check-expect (in-bounds? (make-posn 297  300)) #true)
-(check-expect (in-bounds? (make-posn 298  300)) #false)
-(check-expect (in-bounds? (make-posn 297  301)) #false)
-
+(check-expect (in-bounds? (make-posn MAX-DOT-X  300)) #true)
+(check-expect (in-bounds? (make-posn STOP-X-THRESHOLD  300)) #false)
+(check-expect (in-bounds? (make-posn MAX-DOT-X  301)) #false)
 
 (define (in-bounds? p)
-  (and (<= 0 (posn-x p) 297)
+  (and (<= 0 (posn-x p) MAX-DOT-X)
        (<= 0 (posn-y p) 300)))
 
 (check-expect (scene+dot (make-posn 0 0))
               (place-image DOT 0 0 MTS)) 
 
-(check-expect (scene+dot (make-posn 298 301))
+(check-expect (scene+dot (make-posn STOP-X-THRESHOLD 301))
               REMIND-MSG)  
 
 (define (scene+dot p)
@@ -114,7 +128,7 @@
 (check-expect (end-condition? (make-posn 10 300)) #false)
 
 (define (end-condition? p)
-  (> (posn-x p) 298))
+  (> (posn-x p) STOP-X-THRESHOLD))
 
   ; 显示提醒文案之后，停止函数才停止程序。
 
