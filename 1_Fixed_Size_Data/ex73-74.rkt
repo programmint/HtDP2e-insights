@@ -102,7 +102,7 @@
 (check-expect (scene+dot (make-posn 30 20))
   (place-image DOT 30 20 MTS))
 
-(define (draw-dot-on-scene p)
+(define (place-dot p)
   (place-image DOT (posn-x p) (posn-y p) MTS))
 
 (check-expect (in-bounds? (make-posn 0 0)) #true)
@@ -122,7 +122,7 @@
 
 (define (scene+dot p)
   (cond
-    [(in-bounds? p) (draw-dot-on-scene p)]
+    [(in-bounds? p) (place-dot p)]
     [else REMIND-MSG]))
 
 ; 程序停止函数
@@ -147,7 +147,7 @@
 
 
 
-; === 复杂代码示例（from deepseek） ====================================================================
+; ================================= 复杂代码示例（from deepseek） =======================================
 
 ; 场景设定
 ; 我们设计一个游戏角色系统，包含以下属性：
