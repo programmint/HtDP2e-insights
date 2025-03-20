@@ -78,6 +78,7 @@ htdp2e 的中文版，即：程序设计方法(第 2 版) ，里面某些词，�
 >Because ufo-move-1 and posn+ are complete definitions,**we can even click RUN,** which checks that DrRacket doesn’t complain about grammatical problems with our work so far. 
 >
 **修改：删除一“我们”**
+
 \------   
 
 ### P104 ”语用“一词：该加注释
@@ -97,6 +98,7 @@ htdp2e 的中文版，即：程序设计方法(第 2 版) ，里面某些词，�
 它讨论的 **不是** 数据定义应该是什么（语义层），而是 **如何通过结构体组合现有数据类型** 来 **实际操作**（比如创建实例、约束函数输入输出），从而在代码中 **具体实现** 对复杂数据集合的描述。（from deepseek）
 
 也就是说，"语用"（pragmatics） 强调数据定义，在实际编程中的 **具体应用方式**，而非单纯的理论描述。
+
 \------   
 
 
