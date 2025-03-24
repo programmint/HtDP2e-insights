@@ -14,7 +14,7 @@
 页码以该书为准：[《程序设计方法（第2版）》](https://book.douban.com/subject/35222513/)   
 <br><br>
 
-## 第 3 章：程序设计方法 （How to Design Programs）  
+## 第 3 章、程序设计方法 （How to Design Programs）  
 
 #### 重点：bigbang 语法规则   
 
@@ -26,9 +26,9 @@ bigbang 第 2 章就引入了，题目多集中在第 3 章，一系列练习题
 
 <br><br>
 
-## 第 4 章：区间、枚举和条目（Intervals, Enumerations, and Itemizations）   
+## 第 4 章、区间、枚举和条目（Intervals, Enumerations, and Itemizations）   
 
-### 4.4 区间（Intervals）
+### 4.4、区间（Intervals）
 #### 心得：前面问题的提示答案
 ***P75***  
 
@@ -65,7 +65,7 @@ Figure 24: Rendering with a status line, revised
 <br><br>
 
 
-### 4.5 条目（Itemizations）
+### 4.5、条目（Itemizations）
 
 #### 疑问：NorF 什么意思？
 
@@ -74,9 +74,9 @@ Figure 24: Rendering with a status line, revised
 NorF ：number or false 缩写     
 <br><br>
 
-## 第 5 章：添加结构体 Adding Structure
+## 第 5 章、添加结构体 Adding Structure
 
-### 5.4 定义结构体类型（Defining Structure Types）
+### 5.4、定义结构体类型（Defining Structure Types）
 
 #### 疑问：ball1 or balll ？ 
 
@@ -86,9 +86,9 @@ NorF ：number or false 缩写
 
 <br><br>
 
-### 5.6 结构体编程（Programming with Structures）
+### 5.6、结构体编程（Programming with Structures）
 
-#### 心得：结构体-数据定义，结构体-类型定义
+#### 心得：结构体的数据定义
 
 ***P97***
 
@@ -104,7 +104,7 @@ NorF ：number or false 缩写
 <br><br>
 
 
-### 5.7 数据的空间（The Universe of Data）
+### 5.7、数据的空间（The Universe of Data）
 
 #### 心得：结构体数据定义的意义
 
@@ -121,11 +121,70 @@ NorF ：number or false 缩写
 
 <br><br>  
 
-### 5.8 结构体的设计（Designing with Structures）
+### 5.8、结构体的设计（Designing with Structures）
 
 #### 疑问：r3 与 R3 区别何在？
 
 ***P105***  
+<br><br>
+
+
+### 5.9、总结：结构体的方方面面
+#### 5.9.1、结构体之两个层面的定义
+
+第1、结构体类型定义。  
+
+    目的：机器可执行   
+
+    主要是创建一种新的数据类型，告诉计算机如何构造和操作这种新型数据。
+<br><br>
+第2、结构体数据定义   
+
+    目的：人类可理解。   
+
+    主要是通过注释，解释该结构体的语义，告诉人类数据的含义是什么，以及如何正确使用
+
+这两层面的定义，最后都整合到结构体程序设计中。
+<br><br>
+
+#### 5.9.2、结构体注释的作用
+相比之前，结构体的注释，量多，还复杂。
+
+注释的主要作用如下：
+对机器约束：语法层，如何构造和处理数据。
+对人约束：语义层，数据的意义和正确用法。
+
+注释其实就是“设计契约”，把“语义描述”与“语法规则”进行了双向绑定。
+<br><br>
+
+#### 5.9.3、理解 HtDP2e 的思路
+到了第 5 章，已经隐隐约约感觉出：HtDP2e 的核心，是数据驱动设计。   
+
+***HtDP2e 核心理念：程序设计的本质，是数据设计。***
+
+但从HtDP2e 的完整设计思路来说，总共包含 3 个层面:
+
+第 1、数据定义：明确信息与数据之间的相互转化关系。
+
+第 2、函数设计：模板化操作数据。（数据定义驱动了函数模板）
+
+第 3、测试验证：确保数据和函数符合预期结果。（测试、验证数据和函数是不是一致）
+
+***HtDP2e 的完整设计思路***   
+
+数据定义 → 函数签名/目的声明 → 示例/测试 → 函数模板 → 代码实现 → 测试验证
+
+
+
+
+
+
+
+
+
+
+
+
 <br><br>
 
 ## 第 6 章：条目和结构体（Itemizations and Structures）
