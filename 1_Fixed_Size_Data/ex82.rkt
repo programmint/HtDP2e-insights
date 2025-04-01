@@ -53,9 +53,9 @@
 ; word word -> word 
 (define (compare-word word1 word2)
   (make-word
-   (compare-letter (word-1st word1)(word-1st word2))
-   (compare-letter (word-2nd word1)(word-2nd word2))
-   (compare-letter (word-3rd word1)(word-3rd word2))))
+   (compare-letter (word-1st word1) (word-1st word2))
+   (compare-letter (word-2nd word1) (word-2nd word2))
+   (compare-letter (word-3rd word1) (word-3rd word2))))
 
 ; 测试主函数
 (check-expect
