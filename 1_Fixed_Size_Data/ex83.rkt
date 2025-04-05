@@ -33,39 +33,56 @@
 
 ; 代码---------------------------------------------------------------------------------
 
+; ====================================================
 ; 全局目的
 ; 设计函数render，读入 editor (结构体)，并产生图像。
+; ====================================================
 
-; 定义光标的宽高常量
+; ----------
+; 常量配置
+; ----------
+
+; 光标尺寸（宽*高）
 (define CURSOR-WIDTH 1)
 (define CURSOR-HEIGHT 20)
 
-; 定义编辑背景宽高常量
+; 场景尺寸（宽*高）
 (define SCENE-WIDTH 200)
 (define SCENE-HEIGHT 20)
 
-; 定义字号大小常量
+; 文本字号（单位：像素）
 (define TEXT-SIZE 16)
 
-; 定义文本颜色常量
+; 文本颜色
 (define CONTENT-COLOR "black")
 
-; 构建光标图像常量
-; number -> image 
+; 光标图像（红色竖线）
 (define cursor-image
   (rectangle CURSOR-WIDTH CURSOR-HEIGHT "solid" "red"))
 
-; editor 结构体
-;   描述了一个编辑器，可见的文本是 (string-append pre-text post-text)
-;   光标位于 pre-text 与 post-text 之间
+
+; ----------
+; 编辑器结构体
+; ----------
+
+; 目的：表示文本状态
+; 文本分别是：
+; - pre-text  ：光标前文本（必须是字符串）
+; - post-text ：光标后文本（必须是字符串）
+
 (define-struct editor [pre-text post-text])
 ; 一个 editor 是：(make-editor String String)
 
 
-; render 函数
-;   读入 editor 文本，渲染图像。
-;   图像：光标置于文本内容 pre-text 与 post-texts 之间
+; ----------
+; 渲染函数
+; ----------
+
+; 目的：读入 editor-instance，渲染为图像。
+; 不变式：(invariants)
+;   光标置于 pre-text 与 post-texts 之间
 ; editor -> image 
+
 (define (render content)
   (overlay/align "left" "center"
                 (beside
@@ -75,5 +92,18 @@
                 (empty-scene SCENE-WIDTH SCENE-HEIGHT)))
 
 
-(render (make-editor "Learning" "Htdp2e"))
+; ----------
+; 测试案例
+; ----------
 
+; 测试 1：普通文本
+(render (make-editor "Learning" "Htdp2e"))
+; 显示 "Learning|Htdp2e"
+
+; 测试 2：空编辑器
+(render (make-editor "" ""))   
+; 显示空白场景中的光标
+
+; 测试3：光标居最左端
+(render (make-editor "" "Hello"))   
+; 显示 "|Hello"
