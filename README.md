@@ -91,6 +91,7 @@ Ai 几分钟内，写出一俄罗斯方块游戏，我却经常看不懂题目�
 解完题，才接入 Ai ，请它指点代码，询问优化意见。
 <br><br> 
 
+
 ### 6、理解计算机科学
 2024年底，开始问自己：学完 Htdp2e ，一通百通吗？
 
@@ -188,7 +189,6 @@ VSCodium 和 DrRacket 相互配合使用，但 **DrRacket 有些设置，需要�
 
 本书 python 版 ：[CS61A: Online Textbook](https://wizardforcel.gitbooks.io/sicp-py/content/)
 
-
 解题过程中，实在好奇，一门编程语言，该怎么设计？问了 AI，推荐了 3 本书，分别是：
 
 [入门之选：程序设计语言概念](https://book.douban.com/subject/1699662/)
@@ -199,7 +199,7 @@ VSCodium 和 DrRacket 相互配合使用，但 **DrRacket 有些设置，需要�
 
 学习程序设计，可不仅仅只是思想，编程语言，而是一堆东西，可以参考下面的资料：自学计算机科学
 
-**[TeachYourselfCS-CN](https://github.com/izackwu/TeachYourselfCS-CN)**
+**[TeachYourselfCS-CN](https://github.com/izackwu/TeachYourselfCS-CN)**   
 
 #### 8.2 、公众号
 之前，解题思路，公布至自己的公众号。
