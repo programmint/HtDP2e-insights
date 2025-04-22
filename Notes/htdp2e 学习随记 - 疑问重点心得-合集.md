@@ -27,6 +27,53 @@ bigbang 第 2 章就引入了，题目多集中在第 3 章，一系列练习题
 
 <br>
 
+#### 47 题：按下向下箭头的区别
+
+到底是增加还是减少，纸质版与网络版的区别：
+
+中文版   
+
+>习题47 
+>
+>设计维护并显示“快乐指数”的世界程序，称其为 gauge-prog，并假设程序读入快乐的最大程度。度量显示从最大快乐指数开始，每次时钟滴答，快乐指数以 -0.1 降低，它永远不会低于最低的快乐指数 0。每按一次向下箭头键，快乐指数就 **增加 1/5**；每按一次向上箭头键，快乐指数就增加 1/3。
+>
+
+很清晰，这里讲的是：增加。
+
+<br>
+
+查证英文纸质版图书，内容则是：
+
+>Exercise 47. 
+>
+>Design a world program that maintains and displays a “happiness gauge.” Let’s call it gauge-prog, and let’s agree that the pro-gram consumes the maximum level of happiness. The gauge display starts with the maximum score, and with each clock tick, happiness decreases by -0.1; it never falls below 0, the minimum happiness score. Every time the down arrow key is pressed, happiness **increases** by 1/5; every time the up arrow is pressed, happiness jumps by 1/3.
+>
+
+同样，也是很清晰，依旧是：增加（increases）
+
+<br>
+
+网络版 htdp2e，内容则有小小变化：
+
+>Exercise 47. 
+>
+>Design a world program that maintains and displays a “happiness gauge.” Let’s call it gauge-prog, and let’s agree that happiness is a number between 0 and 100 (inclusive).
+>
+>The gauge-prog program consumes the current level of happiness. With each clock tick, the happiness level decreases by 0.1; it never falls below 0 though. Every time the down arrow key is pressed, happiness **decreases** by 1/5; every time the up arrow is pressed, happiness jumps by 1/3.
+>
+
+同样是按下向下箭头，网络版则变成了减少（decreases），网络版的内容，可以做到实时更新，纸质版则不能。
+
+估计是接受了建议，这里改为了减少。
+
+采用减少更加容易理解，呈现出的图像也更加明显。
+
+就题论题，47题这里，无论是增加还是减少，区别不大。
+
+所以，我解该题时，依旧是采用了增加的计算方法。
+
+<br>
+
 ## 第 4 章、区间、枚举和条目（Intervals, Enumerations, and Itemizations）   
 
 ### 4.4、区间（Intervals）
