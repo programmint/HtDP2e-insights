@@ -62,7 +62,11 @@ bigbang 第 2 章就引入了，题目多集中在第 3 章，一系列练习题
 >The gauge-prog program consumes the current level of happiness. With each clock tick, the happiness level decreases by 0.1; it never falls below 0 though. Every time the down arrow key is pressed, happiness **decreases** by 1/5; every time the up arrow is pressed, happiness jumps by 1/3.
 >
 
-同样是按下向下箭头，网络版则变成了减少（decreases）
+同样是按下向下箭头，网络版则变成了减少（decreases）   
+
+<br>
+
+**推论：**   
 
 网络版内容，可以实时更新，期间估计是接受了建议，这里改为了减少。
 
