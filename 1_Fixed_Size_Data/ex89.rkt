@@ -24,7 +24,9 @@
 ; 这里，纸质版图书，以及网络版内容，二者有区别
 ; 纸质版：增加
 ; 网络版：减少
-; 详见：https://github.com/programmint/HtDP2e-insights/blob/main/Notes/htdp2e%20%E5%AD%A6%E4%B9%A0%E9%9A%8F%E8%AE%B0%20-%20%E7%96%91%E9%97%AE%E9%87%8D%E7%82%B9%E5%BF%83%E5%BE%97-%E5%90%88%E9%9B%86.md#47-%E9%A2%98%E5%A2%9E%E5%8A%A0%E4%B8%8E%E5%87%8F%E5%B0%91%E7%9A%84%E5%8C%BA%E5%88%AB
+
+; 详见：
+; 47 题：增加与减少的区别 https://github.com/programmint/HtDP2e-insights/blob/main/Notes/htdp2e%20%E5%AD%A6%E4%B9%A0%E9%9A%8F%E8%AE%B0%20-%20%E7%96%91%E9%97%AE%E9%87%8D%E7%82%B9%E5%BF%83%E5%BE%97-%E5%90%88%E9%9B%86.md#47-%E9%A2%98%E5%A2%9E%E5%8A%A0%E4%B8%8E%E5%87%8F%E5%B0%91%E7%9A%84%E5%8C%BA%E5%88%AB
 
 ; ------------------------------代码部分 --------------------------------------------------------------
 
