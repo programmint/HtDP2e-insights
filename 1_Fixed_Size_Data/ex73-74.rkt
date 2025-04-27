@@ -1,64 +1,82 @@
 ; 73-74
 
-; == 题目背景 ==
-; 73 与 74 两题,其实隶属一个题目，所以代码放在一起了。
-; 增加了提示文案：游戏结束了。新增这一条件，代码变复杂了。
+; ====================
+; 全局目的
+; ====================
 
+; 73 题创建更新器函数。
+; 74 题设计一交互游戏，一红点移动，可以使用鼠标重置红点。
+; 其实二者隶属一大的题目，所以代码放在一起了。
+; 同时，增加了提示文案：游戏结束了。（新增这一条件，代码变复杂了）
 
 ; == 历史 == 
-; 之前理解更新器函数的作用，有误，现在已经修正。（2025.3）
-; 请 Ai 给了一复杂函数，体会一下更新器。（2025.3）
-; 优化了数字的变量名。（2025.3）
-; 调整了鼠标事件的参数顺序。（2025.3）
+; 2025.3
+; - 之前理解更新器函数的作用，有误，现在已经修正。
+; - 请 Ai 给了一复杂函数，体会一下更新器。
+; - 优化了数字的变量名。
+; - 调整了鼠标事件的参数顺序。
 
+; 2025.4
+; - 依照先写主函数，再写辅函数的顺序，重新调整代码。
 
-; === 代码 ===========================================================================================
+; ------------------------------代码部分 --------------------------------------------------------------
 
-; A Posn represents the state of the world
+; ========
+; 常量定义
+; ========
 
-; 画布尺寸
+; 运动场景
 (define CANVAS-WIDTH 300)
 (define CANVAS-HEIGHT 300)
-
-; 红点半径
-(define DOT-RADIUS 3)
-
-; 提示文案文字大小及位置
-(define TEXT-FONT-SIZE 14)
-(define REMIND-MSG-X 150)
-(define REMIND-MSG-Y 150)
-
-; 红点宽度限制
-(define MAX-DOT-X (- CANVAS-WIDTH DOT-RADIUS))  ; 有效宽度 <= 297
-(define STOP-X-THRESHOLD (+ 1 MAX-DOT-X))  ; 超出有效宽度限制 = 298
-
-; 图形常量
-; number->image
 (define MTS (empty-scene CANVAS-WIDTH CANVAS-HEIGHT))
+
+; 停止文案图像
+(define TEXT-FONT-SIZE 14)
+(define STOP-MSG-X 150)
+(define STOP-MSG-Y 150)
+(define STOP-MSG 
+  (place-image (text "程序已停止" TEXT-FONT-SIZE "red") STOP-MSG-X STOP-MSG-Y MTS))
+
+; 红点图像
+(define DOT-RADIUS 3)
 (define DOT (circle DOT-RADIUS "solid" "red"))
 
-; 提醒文案常量
-(define REMIND-MSG 
-  (place-image (text "程序已停止" TEXT-FONT-SIZE "red") REMIND-MSG-X REMIND-MSG-Y MTS))
+; 红点运动宽度限制
+(define MAX-DOT-X (- CANVAS-WIDTH DOT-RADIUS))  ; 红点运动最大宽度：297
+(define STOP-X-THRESHOLD (+ 3 MAX-DOT-X)) ; 超出有效宽度 = 3 + 最大宽度
+                                          ; 也即最大宽度基础之上，再经历一次时钟函数 
 
-; 更新器函数
-; 时钟函数的子函数
+; =====================
+; 主函数
+; =====================
+; main 主程序
+; Posn -> Posn
+(define (main p)
+  (big-bang p
+    [on-tick x+]
+    [on-mouse reset-dot]
+    [to-draw scene+dot]
+    [stop-when end-condition?]))
 
-; 读入结构体 p，以及数字 n
-; 返回一新的结构体，类似 p，但结构体 x 的值是 n
-; Posn Number -> Posn
-(define (posn-up-x p n )
-  (make-posn n (posn-y p)))
+; =====================
+; 辅函数
+; ===================== 
 
-; 时钟函数
+; -----------
+; 时钟滴答函数
+; -----------
+
 ; 时钟滴答一次，红点 x + 3，y 值不变
 ; Posn -> Posn
 (define (x+ p)
   (posn-up-x p (+ (posn-x p) 3)))
 
-; 定义函数顺序
-; 先定义工具函数，例如本题中的更新器函数。
-; 后定义主函数，工具函数是为主函数服务。本题中的时钟函数，可以视为更新器函数的主函数。
+; 更新器函数
+; - 读入结构体 p，以及数字 n
+; - 返回一新的结构体，类似 p，但结构体 x 的值是 n
+; Posn Number -> Posn
+(define (posn-up-x p n )
+  (make-posn n (posn-y p)))
 
 ; 各自功能
 ; x+ 负责：计算新值（业务逻辑）
@@ -68,83 +86,90 @@
 ; 这题目比较简单，引入更新器有点多余。题目的意图，是为了助你了解“更新器”这概念，留待以后复杂的程序用。
 ; 我请 Ai 补充了一案例，实际体会一下复杂代码是怎么样使用 “更新器"，见代码后面。
 
-
+; -----------
 ; 鼠标事件函数
+; -----------
+
 ; 鼠标点击，重置红点，其他鼠标事件保持原状
 ; poson number number mouseevent -> posn 
-(check-expect
-  (reset-dot (make-posn 10 20) 29 31 "button-down")
-  (make-posn 29 31))
-
-(check-expect
-  (reset-dot (make-posn 10 20) 29 31 "button-up")
-  (make-posn 10 20))
-
 (define (reset-dot p x y me)
   (cond
     [(mouse=? "button-down" me) (make-posn x y)]
     [else p]))
 
+; 验证按下鼠标
+(check-expect
+  (reset-dot (make-posn 10 20) 29 31 "button-down")
+  (make-posn 29 31))
+
+; 验证松开鼠标
+(check-expect
+  (reset-dot (make-posn 10 20) 29 31 "button-up")
+  (make-posn 10 20))
+
+
   ; 注
-  ; 题目并没有详细解释什么是重置，从书中代码来看，所谓重置：鼠标点在那里，红点就出现在那里。
+  ; 什么是重置？题目并没有详细要求，从书中示例代码来看，重置即：鼠标点在那里，红点就出现在那里。
 
   ; 按下鼠标后，立即重置红点，不算太严谨
   ; 如果误触了鼠标左键，立即重置了红点。所以才说，按下鼠标左键，立即重置红点，并不严谨。
+
   ; 更为严谨的方式，按下鼠标，再松开鼠标，这时才重置红点。
   ; 但这样子，代码相对麻烦，而且这一点，也不是本题的重点，所以，还是采用书上的方法。
 
+; -----------
+; 渲染图像函数
+; -----------
 ; 游戏核心逻辑
 ; 红点位于背景内，实时渲染，即：红点圆心所在位置 [0，MAX-DOT-X]，合理范围，即位于背景内
-; 红点圆心位于 (MAX-DOT-X，STOP-X-THRESHOLD] ，显示提示文案 
-; 红点圆心 x 值 > STOP-X-THRESHOLD ，停止游戏
+; 红点圆心位于 >= MAX-DOT-X，显示停止文案 
+; 红点圆心 x 值 STOP-X-THRESHOLD > MAX-DOT-X + 3，也即 MAX-DOT-X 再需多一次时钟函数，则停止游戏
 
-; posn-> image 
+; 实时渲染游戏图像(红点+运动场景)
+; posn -> image 
+(define (scene+dot p)
+  (cond
+    [(about-to-stop? p) STOP-MSG]
+    [else (place-dot p)]))
+
+; 检验红点是否停止运动？
+; posn -> boolean
+(define (about-to-stop? p)
+  (>= (posn-x p) MAX-DOT-X))
+
+; 验证游戏图像
 (check-expect (scene+dot (make-posn 30 20))
   (place-image DOT 30 20 MTS))
-
-(define (place-dot p)
-  (place-image DOT (posn-x p) (posn-y p) MTS))
-
-(check-expect (in-bounds? (make-posn 0 0)) #true)
-(check-expect (in-bounds? (make-posn MAX-DOT-X  300)) #true)
-(check-expect (in-bounds? (make-posn STOP-X-THRESHOLD  300)) #false)
-(check-expect (in-bounds? (make-posn MAX-DOT-X  301)) #false)
-
-(define (in-bounds? p)
-  (and (<= 0 (posn-x p) MAX-DOT-X)
-       (<= 0 (posn-y p) 300)))
 
 (check-expect (scene+dot (make-posn 0 0))
               (place-image DOT 0 0 MTS)) 
 
 (check-expect (scene+dot (make-posn STOP-X-THRESHOLD 301))
-              REMIND-MSG)  
+              STOP-MSG)  
 
-(define (scene+dot p)
-  (cond
-    [(in-bounds? p) (place-dot p)]
-    [else REMIND-MSG]))
 
-; 程序停止函数
+; 实时渲染红点图像
+; posn -> image 
+(define (place-dot p)
+  (place-image DOT (posn-x p) (posn-y p) MTS))
+
+; --------------
+;程序停止函数
+; --------------
+; 验证程序是否停止？
 ; posn -> boolean 
-(check-expect (end-condition? (make-posn 10 300)) #false)
-
 (define (end-condition? p)
   (> (posn-x p) STOP-X-THRESHOLD))
 
   ; 显示提醒文案之后，停止函数才停止程序。
 
-; 主程序
-; Posn -> Posn
-(define (main p)
-  (big-bang p
-    [on-tick x+]
-    [on-mouse reset-dot]
-    [to-draw scene+dot]
-    [stop-when end-condition?]))
+; 验证程序停止条件
+(check-expect (end-condition? (make-posn 10 300)) #false)
 
+; =====================
+; 程序启动
+; ===================== 
 (main (make-posn 10 150 ))
-
 
 
 ; ================================= 复杂代码示例（from deepseek） =======================================
