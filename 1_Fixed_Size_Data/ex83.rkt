@@ -103,12 +103,12 @@
 ;   光标置于 pre 与 post 之间
 ; editor -> image 
 
-(define (render content)
+(define (render state)
   (overlay/align "left" "center"
                 (beside
-                 (text (editor-pre content) TEXT-SIZE CONTENT-COLOR)
+                 (text (editor-pre state) TEXT-SIZE CONTENT-COLOR)
                  CURSOR-IMG
-                 (text (editor-post content) TEXT-SIZE CONTENT-COLOR))
+                 (text (editor-post state) TEXT-SIZE CONTENT-COLOR))
                 SCENE))
 
 
