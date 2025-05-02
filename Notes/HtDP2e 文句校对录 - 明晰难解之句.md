@@ -29,7 +29,7 @@ htdp2e 的中文版，即：程序设计方法(第 2 版) ，里面某些词，�
 >  
 >5.5 Computing with Structures 
 >
->Structure types generalize Cartesian points ***in two ways.*** First, a structure type may specify an arbitrary number of fields: zero, one, two, three, and so forth. Second, structure types name fields, they don’t number them.This helps programmers read code because it is much easier to remember that a family name is available in a field called last-name than in the 7th field.
+>Structure types generalize Cartesian points ***in two ways.*** First， a structure type may specify an arbitrary number of fields: zero， one， two， three， and so forth. Second， structure types name fields， they don’t number them.This helps programmers read code because it is much easier to remember that a family name is available in a field called last-name than in the 7th field.
 
 ***修改: in two ways 应该翻译为：用两种方式 or 以两种方式***
 
@@ -50,7 +50,7 @@ htdp2e 的中文版，即：程序设计方法(第 2 版) ，里面某些词，�
 >   
 >Sample Problem Your team is designing a game program ***that keeps track of an object that moves across the canvas at changing speed.***
 
-这句子，读一次,实在不解其意。
+这句子，读一次，实在不解其意。
 
 看英文，其实是一复合句，英文文法之下，各子句，各负其责，丝毫不乱。
 
@@ -71,7 +71,7 @@ htdp2e 的中文版，即：程序设计方法(第 2 版) ，里面某些词，�
 >
 >Englsih
 >
->Because ufo-move-1 and posn+ are complete definitions,***we can even click RUN,*** which checks that DrRacket doesn’t complain about grammatical problems with our work so far. 
+>Because ufo-move-1 and posn+ are complete definitions，***we can even click RUN，*** which checks that DrRacket doesn’t complain about grammatical problems with our work so far. 
 >
 ***修改：删除一“我们”***   
 <br><br>
@@ -86,7 +86,7 @@ htdp2e 的中文版，即：程序设计方法(第 2 版) ，里面某些词，�
 >
 >English   
 >
->As far as the ***pragmatics*** of data definitions is concerned, a data definition for structure types describes large collections of data via combinations of existing data definitions with instances.
+>As far as the ***pragmatics*** of data definitions is concerned， a data definition for structure types describes large collections of data via combinations of existing data definitions with instances.
 >
 “语用”一词，实在不知道讲什么。
 
@@ -98,6 +98,48 @@ htdp2e 的中文版，即：程序设计方法(第 2 版) ，里面某些词，�
 
 "语用"（pragmatics）一词， 强调于实际编程中的 ***具体应用方式***，而非单纯的理论描述。
 <br><br>
+
+### 86 题，关键处翻译有误
+***p108***
+
+>
+>中文
+>
+>习题 86 注意，如果输入很多文字，编辑器程序不会显示所有的文本。相反，文本在右边缘被切断。修改习题84中的 edit 函数，如果将按键添加到 pre 字段的末尾意味着渲染的文本对画布来说太宽，则忽略按键。
+>
+>英文
+>
+>Exercise 86. Notice that if you type a lot， your editor program does not display all of the text. Instead the text is cut off at the right margin. Modify your function edit from exercise 84 so that it ignores a keystroke if adding it to the end of the pre field would mean the rendered text is too wide for your canvas.
+
+第 86 题总共两句话，第 1 句容易懂，第 2 句则有问题了，最后几个字：
+
+>则忽略按键。
+
+实在令人困惑，整个 5.10 小节，按键行为有 3 种，分别是：
+
+第 1 种、添加单个字符按键；
+
+第 2 种、退格键；
+
+第 3 种、光标前后移动键；
+
+到底是忽略哪一个按键？
+
+回看英文，你会看到两个词汇：
+
+Modify your function edit from exercise 84 so that it ignores a keystroke if **adding it** …… 
+
+综合读英文，可以判断出：adding it 这两个词汇，汉译内容翻译错了。
+
+**正确的意思：** 是指准备添加内容，按下的键。
+
+直白点讲：单击按键，添加内容。按键之后的内容长度，超过了画布长度，则忽略该次按键。
+
+
+
+
+
+<br>
 
 ## 第 6 章：条目和结构体（Itemizations and Structures）
 
@@ -113,7 +155,7 @@ htdp2e 的中文版，即：程序设计方法(第 2 版) ，里面某些词，�
 >
 >英文   
 >
->Since the development of data representations is the starting point for proper program design, it cannot surprise you that ***programmers frequently want to itemize data definitions that involve structures or to use structures to combine itemized data.***
+>Since the development of data representations is the starting point for proper program design， it cannot surprise you that ***programmers frequently want to itemize data definitions that involve structures or to use structures to combine itemized data.***
 >
 粗文体部分，翻译后的中文，不易懂，这个长句需要意译。
 
