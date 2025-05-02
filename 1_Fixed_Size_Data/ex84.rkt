@@ -54,7 +54,7 @@
 ; ====================
 ; 全局目的
 ; ====================
-; 单行文本编辑器程序。使用 text-editor 结构体表示编辑器状态：
+; 单行文本编辑器程序。使用 editor 结构体表示编辑器状态：
 ; - pre：光标左侧文本
 ; - post：光标右侧文本
 ; - 光标位置：位于 pre 和 post 之间
@@ -68,9 +68,9 @@
 ; 结构体
 ; =======
 
-; text-editor 是编辑器结构体
-(define-struct text-editor [pre post])
-; text-editor 是 (make-text-editor String String)
+; editor 是编辑器结构体
+(define-struct editor [pre post])
+; editor 是 (make-editor String String)
 ; 解释
 ; - pre: 光标前的文字
 ; - post：光标后的文字
@@ -112,81 +112,79 @@
 
 
 ; 增加单字符，位于光标前字符最后面
-; text-editor string -> text-editor
+; editor string -> editor
 (define (insert-char state key)
-  (make-text-editor
-   (string-append (text-editor-pre state) key)
-   (text-editor-post state)))
-
+  (make-editor
+   (string-append (editor-pre state) key)
+   (editor-post state)))
 
 ; =============
 ; 光标左移函数
 ; =============
 
 ; 光标是否可以左移？
-; text-editor -> boolean
+; editor -> boolean
 (define (can-move-left? state)
-  (> (string-length (text-editor-pre state)) 0))
+  (> (string-length (editor-pre state)) 0))
 
 ; 光标左移，返回新状态编辑器
-; text-editor -> text-editor
+; editor -> editor
 (define (move-cursor-left state)
-  (make-text-editor
+  (make-editor
    (pre-without-last state)
-   (string-append (pre-last state) (text-editor-post state))))
+   (string-append (pre-last state) (editor-post state))))
 
 ; 光标前字符，移去最后一个字符，所剩字符
-; text-editor -> string
+; editor -> string
 (define (pre-without-last state)
-  (substring (text-editor-pre state) 0 (- (string-length (text-editor-pre state)) 1)))
+  (substring (editor-pre state) 0 (- (string-length (editor-pre state)) 1)))
 
 ; 光标前字符的最后一个字符
-; text-editor -> string
+; editor -> string
 (define (pre-last state)
-  (substring (text-editor-pre state) (- (string-length (text-editor-pre state)) 1)))
-
+  (substring (editor-pre state) (- (string-length (editor-pre state)) 1)))
 
 ; =============
 ; 光标右移函数
 ; =============
 
 ; 光标是否可以右移？
-; text-editor -> boolean
+; editor -> boolean
 (define (can-move-right? state)
-  (> (string-length (text-editor-post state)) 0))
+  (> (string-length (editor-post state)) 0))
 
 ; 光标右移，返回新状态编辑器
-; text-editor -> text-editor
+; editor -> editor
 (define (move-cursor-right state)
-  (make-text-editor
-   (string-append (text-editor-pre state) (post-first state))
+  (make-editor
+   (string-append (editor-pre state) (post-first state))
    (post-without-first state)))
 
 ; 光标后面字符，第一个字符
-; text-editor -> string
+; editor -> string
 (define (post-first state)
-  (substring (text-editor-post state) 0 1))
+  (substring (editor-post state) 0 1))
 
 ; 光标后面字符，移走第一个字符，所剩字符
-; text-editor -> string
+; editor -> string
 (define (post-without-first state)
- (substring (text-editor-post state) 1 (string-length (text-editor-post state))))
+ (substring (editor-post state) 1 (string-length (editor-post state))))
 
 ; ===============
 ; 退格删除字符函数
 ; ===============
 
 ; 是否可以删除字符？
-; text-editor -> boolean
+; editor -> boolean
 (define (can-delete? state)
-  (> (string-length (text-editor-pre state)) 0))
+  (> (string-length (editor-pre state)) 0))
   
 ; 删除光标前的一个字符
-; text-editor -> text-editor
+; editor -> editor
 (define (delete-char-left state)
-  (make-text-editor
+  (make-editor
    (pre-without-last state)
-   (text-editor-post state)))
+   (editor-post state)))
 
 ; ===============
 ; 测试案例
@@ -196,99 +194,98 @@
 ; 依照我的思路，需要同时测正反案例，反面错误案例，需要用到 check-error 这函数，可这里我不想多补课。
 ; 所以，暂时只能测试正确案例。
 
-
 ; 测试1：向空编辑器添加字符
-(check-expect (handle-key-event (make-text-editor "" "") "a")
-              (make-text-editor "a" ""))
+(check-expect (handle-key-event (make-editor "" "") "a")
+              (make-editor "a" ""))
 
 ; 测试2：向已有内容的编辑器添加字符
-(check-expect (handle-key-event (make-text-editor "hello" "world") "a")
-              (make-text-editor "helloa" "world"))
+(check-expect (handle-key-event (make-editor "hello" "world") "a")
+              (make-editor "helloa" "world"))
 
 ; 测试3：添加数字字符
-(check-expect (handle-key-event (make-text-editor "test" "") "1")
-              (make-text-editor "test1" ""))
+(check-expect (handle-key-event (make-editor "test" "") "1")
+              (make-editor "test1" ""))
 
 ; 测试4：添加空格
-(check-expect (handle-key-event (make-text-editor "hello" "world") " ")
-              (make-text-editor "hello " "world"))
+(check-expect (handle-key-event (make-editor "hello" "world") " ")
+              (make-editor "hello " "world"))
 
 ; 测试5：添加特殊字符
-(check-expect (handle-key-event (make-text-editor "test" "") "!")
-              (make-text-editor "test!" ""))
+(check-expect (handle-key-event (make-editor "test" "") "!")
+              (make-editor "test!" ""))
 
 ; 测试6：光标左移 - 从中间位置
-(check-expect (handle-key-event (make-text-editor "hel" "lo") "left")
-              (make-text-editor "he" "llo"))
+(check-expect (handle-key-event (make-editor "hel" "lo") "left")
+              (make-editor "he" "llo"))
 
 ; 测试7：光标左移 - 从最左侧(无法左移)
-(check-expect (handle-key-event (make-text-editor "" "hello") "left")
-              (make-text-editor "" "hello"))
+(check-expect (handle-key-event (make-editor "" "hello") "left")
+              (make-editor "" "hello"))
 
 ; 测试8：光标右移 - 从中间位置
-(check-expect (handle-key-event (make-text-editor "hel" "lo") "right")
-              (make-text-editor "hell" "o"))
+(check-expect (handle-key-event (make-editor "hel" "lo") "right")
+              (make-editor "hell" "o"))
 
 ; 测试9：光标右移 - 从最右侧(无法右移)
-(check-expect (handle-key-event (make-text-editor "hello" "") "right")
-              (make-text-editor "hello" ""))
+(check-expect (handle-key-event (make-editor "hello" "") "right")
+              (make-editor "hello" ""))
 
 ; 测试10：删除字符 - 从中间位置
-(check-expect (handle-key-event (make-text-editor "hel" "lo") "\b")
-              (make-text-editor "he" "lo"))  ; 不是 (make-text-editor "he" "llo")
+(check-expect (handle-key-event (make-editor "hel" "lo") "\b")
+              (make-editor "he" "lo"))  ; 不是 (make-editor "he" "llo")
 
 ; 测试11：删除字符 - 从最左侧(无法删除)
-(check-expect (handle-key-event (make-text-editor "" "hello") "\b")
-              (make-text-editor "" "hello"))
+(check-expect (handle-key-event (make-editor "" "hello") "\b")
+              (make-editor "" "hello"))
 
 ; 测试12：忽略制表符
-(check-expect (handle-key-event (make-text-editor "hello" "world") "\t")
-              (make-text-editor "hello" "world"))
+(check-expect (handle-key-event (make-editor "hello" "world") "\t")
+              (make-editor "hello" "world"))
 
 ; 测试13：忽略回车符
-(check-expect (handle-key-event (make-text-editor "hello" "world") "\r")
-              (make-text-editor "hello" "world"))
+(check-expect (handle-key-event (make-editor "hello" "world") "\r")
+              (make-editor "hello" "world"))
 
 ; 测试14：忽略不支持的特殊键
-(check-expect (handle-key-event (make-text-editor "hello" "world") "up")
-              (make-text-editor "hello" "world"))
+(check-expect (handle-key-event (make-editor "hello" "world") "up")
+              (make-editor "hello" "world"))
 
 ; 测试15：连续操作 - 添加字符后左移
 (check-expect (handle-key-event 
-               (handle-key-event (make-text-editor "he" "llo") "x") 
+               (handle-key-event (make-editor "he" "llo") "x") 
                "left")
-              (make-text-editor "he" "xllo"))
+              (make-editor "he" "xllo"))
 
 ; 测试16：连续操作 - 右移后删除
 (check-expect (handle-key-event 
-               (handle-key-event (make-text-editor "he" "llo") "right") 
+               (handle-key-event (make-editor "he" "llo") "right") 
                "\b")
-              (make-text-editor "he" "lo"))
+              (make-editor "he" "lo"))
 
 ; 测试17：连续操作 - 左移后右移
 (check-expect (handle-key-event 
-               (handle-key-event (make-text-editor "hel" "lo") "left") 
+               (handle-key-event (make-editor "hel" "lo") "left") 
                "right")
-              (make-text-editor "hel" "lo"))
+              (make-editor "hel" "lo"))
 
 ; 测试18：连续操作 - 添加多个字符
 (check-expect (handle-key-event 
-               (handle-key-event (make-text-editor "he" "llo") "x")
+               (handle-key-event (make-editor "he" "llo") "x")
                "y")
-              (make-text-editor "hexy" "llo"))
+              (make-editor "hexy" "llo"))
 
 ; 测试19：连续操作 - 删除后添加
 (check-expect (handle-key-event 
-               (handle-key-event (make-text-editor "hello" "") "\b")
+               (handle-key-event (make-editor "hello" "") "\b")
                "x")
-              (make-text-editor "hellx" ""))
+              (make-editor "hellx" ""))
 
 ; 测试20：复杂序列操作
 (check-expect (handle-key-event 
                (handle-key-event 
                 (handle-key-event 
-                 (handle-key-event (make-text-editor "h" "ello") "right")
+                 (handle-key-event (make-editor "h" "ello") "right")
                  "x")
                 "left")
                "\b")
-              (make-text-editor "h" "xllo"))
+              (make-editor "h" "xllo"))
