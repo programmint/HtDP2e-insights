@@ -49,7 +49,7 @@
 ; =====================
 ; 主函数
 ; =====================
-; main 主程序
+; main 主函数
 ; Posn -> Posn
 (define (main p)
   (big-bang p

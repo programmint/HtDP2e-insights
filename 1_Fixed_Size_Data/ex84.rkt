@@ -1,8 +1,8 @@
 ; 84
 
-; ------------
+; =========
 ; 明辨题意
-; ------------
+; =========
 
 ; 本题的各个要点，作者刻意拆开来，分别阐述。
 ; 相互之间的关系，需要你自己梳理，方能明辨题意。
@@ -64,7 +64,6 @@
 ; 2. 使用左右方向键移动光标
 ; 3. 使用退格键删除光标前的字符
 
-
 ; =======
 ; 结构体
 ; =======
@@ -72,6 +71,9 @@
 ; text-editor 是编辑器结构体
 (define-struct text-editor [pre post])
 ; text-editor 是 (make-text-editor String String)
+; 解释
+; - pre: 光标前的文字
+; - post：光标后的文字
 
 ; =======
 ; 主函数
@@ -79,14 +81,17 @@
 
 ; 满足限定条件，按键函数返回新编辑器状态
 ; editor string -> editor
-(define (handle-key-event ed key)
+(define (handle-key-event state key)
   (cond
-   [(and (single-char? key) (avoid-chars? key)) (insert-char ed key)]
-   [(and (key=? key "left") (can-move-left? ed)) (move-cursor-left ed)]
-   [(and (key=? key "right") (can-move-right? ed)) (move-cursor-right ed)]
-   [(and (key=? key "\b") (can-delete? ed)) (delete-char-left ed)]
-   [else ed]))
+   [(and (single-char? key) (avoid-chars? key)) (insert-char state key)]
+   [(and (key=? key "left") (can-move-left? state)) (move-cursor-left state)]
+   [(and (key=? key "right") (can-move-right? state)) (move-cursor-right state)]
+   [(and (key=? key "\b") (can-delete? state)) (delete-char-left state)]
+   [else state]))
 
+; ========
+; 辅函数
+; ========
 
 ; ===============
 ; 添加单个字符函数
@@ -96,7 +101,6 @@
 ; string -> boolean
 (define (single-char? key)
   (= (string-length key) 1))
-
 
 ; 单击按键时，需过滤的字符？
 ; string -> boolean
@@ -109,10 +113,10 @@
 
 ; 增加单字符，位于光标前字符最后面
 ; text-editor string -> text-editor
-(define (insert-char ed key)
+(define (insert-char state key)
   (make-text-editor
-   (string-append (text-editor-pre ed) key)
-   (text-editor-post ed)))
+   (string-append (text-editor-pre state) key)
+   (text-editor-post state)))
 
 
 ; =============
@@ -121,28 +125,25 @@
 
 ; 光标是否可以左移？
 ; text-editor -> boolean
-(define (can-move-left? ed)
-  (> (string-length (text-editor-pre ed)) 0))
-
+(define (can-move-left? state)
+  (> (string-length (text-editor-pre state)) 0))
 
 ; 光标左移，返回新状态编辑器
 ; text-editor -> text-editor
-(define (move-cursor-left ed)
+(define (move-cursor-left state)
   (make-text-editor
-   (pre-without-last ed)
-   (string-append (pre-last ed) (text-editor-post ed))))
-
+   (pre-without-last state)
+   (string-append (pre-last state) (text-editor-post state))))
 
 ; 光标前字符，移去最后一个字符，所剩字符
 ; text-editor -> string
-(define (pre-without-last ed)
-  (substring (text-editor-pre ed) 0 (- (string-length (text-editor-pre ed)) 1)))
-
+(define (pre-without-last state)
+  (substring (text-editor-pre state) 0 (- (string-length (text-editor-pre state)) 1)))
 
 ; 光标前字符的最后一个字符
 ; text-editor -> string
-(define (pre-last ed)
-  (substring (text-editor-pre ed) (- (string-length (text-editor-pre ed)) 1)))
+(define (pre-last state)
+  (substring (text-editor-pre state) (- (string-length (text-editor-pre state)) 1)))
 
 
 ; =============
@@ -151,29 +152,25 @@
 
 ; 光标是否可以右移？
 ; text-editor -> boolean
-(define (can-move-right? ed)
-  (> (string-length (text-editor-post ed)) 0))
-
+(define (can-move-right? state)
+  (> (string-length (text-editor-post state)) 0))
 
 ; 光标右移，返回新状态编辑器
 ; text-editor -> text-editor
-(define (move-cursor-right ed)
+(define (move-cursor-right state)
   (make-text-editor
-   (string-append (text-editor-pre ed) (post-first ed))
-   (post-without-first ed)))
-
+   (string-append (text-editor-pre state) (post-first state))
+   (post-without-first state)))
 
 ; 光标后面字符，第一个字符
 ; text-editor -> string
-(define (post-first ed)
-  (substring (text-editor-post ed) 0 1))
-
+(define (post-first state)
+  (substring (text-editor-post state) 0 1))
 
 ; 光标后面字符，移走第一个字符，所剩字符
 ; text-editor -> string
-(define (post-without-first ed)
- (substring (text-editor-post ed) 1 (string-length (text-editor-post ed))))
-
+(define (post-without-first state)
+ (substring (text-editor-post state) 1 (string-length (text-editor-post state))))
 
 ; ===============
 ; 退格删除字符函数
@@ -181,17 +178,15 @@
 
 ; 是否可以删除字符？
 ; text-editor -> boolean
-(define (can-delete? ed)
-  (> (string-length (text-editor-pre ed)) 0))
+(define (can-delete? state)
+  (> (string-length (text-editor-pre state)) 0))
   
-
 ; 删除光标前的一个字符
 ; text-editor -> text-editor
-(define (delete-char-left ed)
+(define (delete-char-left state)
   (make-text-editor
-   (pre-without-last ed)
-   (text-editor-post ed)))
-
+   (pre-without-last state)
+   (text-editor-post state)))
 
 ; ===============
 ; 测试案例
