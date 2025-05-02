@@ -38,10 +38,20 @@
 ; 为什么必须得使用结构体，使用字符串不可以吗？
 
 ; 答：
+; 因为题目有了明确暗示，使用结构体。
+; Editor 就是这个明确暗示。
+; htdp2e 中文版，P105 页，以 r3 与 R3 的方式，暗示了这里的用法。 
+; 详见：https://github.com/programmint/HtDP2e-insights/blob/main/Notes/htdp2e%20%E5%AD%A6%E4%B9%A0%E9%9A%8F%E8%AE%B0%20-%20%E7%96%91%E9%97%AE%E9%87%8D%E7%82%B9%E5%BF%83%E5%BE%97-%E5%90%88%E9%9B%86.md#58%E7%BB%93%E6%9E%84%E4%BD%93%E7%9A%84%E8%AE%BE%E8%AE%A1designing-with-structures
+
+; 使用字符串不可以吗？
 ; 都可以，87 题会要求你使用字符串解决问题。
 ; 解完 87 题，对比一下，何者为佳？
 
 ; ------------------------------代码部分 --------------------------------------------------------------
+; ==========================================
+; 缩写说明
+; - IMG: image（图片）
+; ==========================================
 
 ; =============
 ; 全局目的
@@ -49,17 +59,23 @@
 
 ; 设计函数render，读入 editor (结构体)，并产生图像。
 
-; ---------- 
-; 常量配置
-; ----------
+; =============
+; 常量定义
+; =============
 
-; 光标尺寸（宽*高）
+; 光标图像（红色竖线）
 (define CURSOR-WIDTH 1)
 (define CURSOR-HEIGHT 20)
 
-; 场景尺寸（宽*高）
+(define CURSOR-IMG
+  (rectangle CURSOR-WIDTH CURSOR-HEIGHT "solid" "red"))
+
+; 编辑器场景
 (define SCENE-WIDTH 200)
 (define SCENE-HEIGHT 20)
+
+(define SCENE
+  (empty-scene SCENE-WIDTH SCENE-HEIGHT))
 
 ; 文本字号（单位：像素）
 (define TEXT-SIZE 16)
@@ -67,23 +83,16 @@
 ; 文本颜色
 (define CONTENT-COLOR "black")
 
-; 光标图像（红色竖线）
-(define cursor-image
-  (rectangle CURSOR-WIDTH CURSOR-HEIGHT "solid" "red"))
+; =============
+; 结构体
+; =============
 
-
-; ----------
-; 编辑器结构体
-; ----------
-
-; 目的：表示文本
-; 文本分别是：
-; - pre-text  ：光标前文本（必须是字符串）
-; - post-text ：光标后文本（必须是字符串）
-
+; editor 是结构体，表示文本编辑器里的文字
 (define-struct editor [pre-text post-text])
 ; 一个 editor 是：(make-editor String String)
-
+; 解释：
+; - pre-text  ：光标前文本（必须是字符串）
+; - post-text ：光标后文本（必须是字符串）
 
 ; ----------
 ; 渲染函数
@@ -98,9 +107,9 @@
   (overlay/align "left" "center"
                 (beside
                  (text (editor-pre-text content) TEXT-SIZE CONTENT-COLOR)
-                 cursor-image
+                 CURSOR-IMG
                  (text (editor-post-text content) TEXT-SIZE CONTENT-COLOR))
-                (empty-scene SCENE-WIDTH SCENE-HEIGHT)))
+                SCENE))
 
 
 ; ----------
