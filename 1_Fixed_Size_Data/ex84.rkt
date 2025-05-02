@@ -81,7 +81,7 @@
 
 ; 满足限定条件，按键函数返回新编辑器状态
 ; editor string -> editor
-(define (handle-key-event state key)
+(define (handle-key state key)
   (cond
    [(and (single-char? key) (avoid-chars? key)) (insert-char state key)]
    [(and (key=? key "left") (can-move-left? state)) (move-cursor-left state)]
@@ -195,96 +195,96 @@
 ; 所以，暂时只能测试正确案例。
 
 ; 测试1：向空编辑器添加字符
-(check-expect (handle-key-event (make-editor "" "") "a")
+(check-expect (handle-key (make-editor "" "") "a")
               (make-editor "a" ""))
 
 ; 测试2：向已有内容的编辑器添加字符
-(check-expect (handle-key-event (make-editor "hello" "world") "a")
+(check-expect (handle-key (make-editor "hello" "world") "a")
               (make-editor "helloa" "world"))
 
 ; 测试3：添加数字字符
-(check-expect (handle-key-event (make-editor "test" "") "1")
+(check-expect (handle-key (make-editor "test" "") "1")
               (make-editor "test1" ""))
 
 ; 测试4：添加空格
-(check-expect (handle-key-event (make-editor "hello" "world") " ")
+(check-expect (handle-key (make-editor "hello" "world") " ")
               (make-editor "hello " "world"))
 
 ; 测试5：添加特殊字符
-(check-expect (handle-key-event (make-editor "test" "") "!")
+(check-expect (handle-key (make-editor "test" "") "!")
               (make-editor "test!" ""))
 
 ; 测试6：光标左移 - 从中间位置
-(check-expect (handle-key-event (make-editor "hel" "lo") "left")
+(check-expect (handle-key (make-editor "hel" "lo") "left")
               (make-editor "he" "llo"))
 
 ; 测试7：光标左移 - 从最左侧(无法左移)
-(check-expect (handle-key-event (make-editor "" "hello") "left")
+(check-expect (handle-key (make-editor "" "hello") "left")
               (make-editor "" "hello"))
 
 ; 测试8：光标右移 - 从中间位置
-(check-expect (handle-key-event (make-editor "hel" "lo") "right")
+(check-expect (handle-key (make-editor "hel" "lo") "right")
               (make-editor "hell" "o"))
 
 ; 测试9：光标右移 - 从最右侧(无法右移)
-(check-expect (handle-key-event (make-editor "hello" "") "right")
+(check-expect (handle-key (make-editor "hello" "") "right")
               (make-editor "hello" ""))
 
 ; 测试10：删除字符 - 从中间位置
-(check-expect (handle-key-event (make-editor "hel" "lo") "\b")
+(check-expect (handle-key (make-editor "hel" "lo") "\b")
               (make-editor "he" "lo"))  ; 不是 (make-editor "he" "llo")
 
 ; 测试11：删除字符 - 从最左侧(无法删除)
-(check-expect (handle-key-event (make-editor "" "hello") "\b")
+(check-expect (handle-key (make-editor "" "hello") "\b")
               (make-editor "" "hello"))
 
 ; 测试12：忽略制表符
-(check-expect (handle-key-event (make-editor "hello" "world") "\t")
+(check-expect (handle-key (make-editor "hello" "world") "\t")
               (make-editor "hello" "world"))
 
 ; 测试13：忽略回车符
-(check-expect (handle-key-event (make-editor "hello" "world") "\r")
+(check-expect (handle-key (make-editor "hello" "world") "\r")
               (make-editor "hello" "world"))
 
 ; 测试14：忽略不支持的特殊键
-(check-expect (handle-key-event (make-editor "hello" "world") "up")
+(check-expect (handle-key (make-editor "hello" "world") "up")
               (make-editor "hello" "world"))
 
 ; 测试15：连续操作 - 添加字符后左移
-(check-expect (handle-key-event 
-               (handle-key-event (make-editor "he" "llo") "x") 
+(check-expect (handle-key 
+               (handle-key (make-editor "he" "llo") "x") 
                "left")
               (make-editor "he" "xllo"))
 
 ; 测试16：连续操作 - 右移后删除
-(check-expect (handle-key-event 
-               (handle-key-event (make-editor "he" "llo") "right") 
+(check-expect (handle-key 
+               (handle-key (make-editor "he" "llo") "right") 
                "\b")
               (make-editor "he" "lo"))
 
 ; 测试17：连续操作 - 左移后右移
-(check-expect (handle-key-event 
-               (handle-key-event (make-editor "hel" "lo") "left") 
+(check-expect (handle-key 
+               (handle-key (make-editor "hel" "lo") "left") 
                "right")
               (make-editor "hel" "lo"))
 
 ; 测试18：连续操作 - 添加多个字符
-(check-expect (handle-key-event 
-               (handle-key-event (make-editor "he" "llo") "x")
+(check-expect (handle-key 
+               (handle-key (make-editor "he" "llo") "x")
                "y")
               (make-editor "hexy" "llo"))
 
 ; 测试19：连续操作 - 删除后添加
-(check-expect (handle-key-event 
-               (handle-key-event (make-editor "hello" "") "\b")
+(check-expect (handle-key 
+               (handle-key (make-editor "hello" "") "\b")
                "x")
               (make-editor "hellx" ""))
 
 ; 测试20：复杂序列操作
-(check-expect (handle-key-event 
-               (handle-key-event 
-                (handle-key-event 
-                 (handle-key-event (make-editor "h" "ello") "right")
+(check-expect (handle-key 
+               (handle-key 
+                (handle-key 
+                 (handle-key (make-editor "h" "ello") "right")
                  "x")
                 "left")
                "\b")

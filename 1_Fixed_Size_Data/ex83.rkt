@@ -88,11 +88,11 @@
 ; =============
 
 ; editor 是结构体，表示文本编辑器里的文字
-(define-struct editor [pre-text post-text])
+(define-struct editor [pre post])
 ; 一个 editor 是：(make-editor String String)
 ; 解释：
-; - pre-text  ：光标前文本（必须是字符串）
-; - post-text ：光标后文本（必须是字符串）
+; - pre  ：光标前文本（必须是字符串）
+; - post ：光标后文本（必须是字符串）
 
 ; ----------
 ; 渲染函数
@@ -100,15 +100,15 @@
 
 ; 目的：读入 editor-instance，渲染为图像。
 ; 不变式：(invariants)
-;   光标置于 pre-text 与 post-texts 之间
+;   光标置于 pre 与 post 之间
 ; editor -> image 
 
 (define (render content)
   (overlay/align "left" "center"
                 (beside
-                 (text (editor-pre-text content) TEXT-SIZE CONTENT-COLOR)
+                 (text (editor-pre content) TEXT-SIZE CONTENT-COLOR)
                  CURSOR-IMG
-                 (text (editor-post-text content) TEXT-SIZE CONTENT-COLOR))
+                 (text (editor-post content) TEXT-SIZE CONTENT-COLOR))
                 SCENE))
 
 
