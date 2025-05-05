@@ -75,9 +75,14 @@
 ; - pre: 光标前的文字
 ; - post：光标后的文字
 
-; =======
+; 测试 editor 结构体选择函数
+(check-expect (editor-pre (make-editor "learning " "HTDP2e")) "learning ")
+(check-expect (editor-post (make-editor "learning " "HTDP2e")) "HTDP2e")
+
+
+; =====================
 ; 主函数
-; =======
+; =====================
 
 ; 满足限定条件，按键函数返回新编辑器状态
 ; editor string -> editor
@@ -89,10 +94,34 @@
    [(and (key=? key "\b") (can-delete? state)) (delete-char-left state)]
    [else state]))
 
-; ========
-; 辅函数
-; ========
+; 测试 handle-key 函数
+(check-expect (handle-key (make-editor "learning " "HTDP2e") "a")
+              (make-editor "learning a" "HTDP2e"))
 
+(check-expect (handle-key (make-editor "learning " "HTDP2e") "left")
+              (make-editor "learning" " HTDP2e"))
+
+(check-expect (handle-key (make-editor "learning " "HTDP2e") "right")
+              (make-editor "learning H" "TDP2e"))
+
+(check-expect (handle-key (make-editor "learning " "HTDP2e") "\b")
+              (make-editor "learning" "HTDP2e"))
+
+(check-expect (handle-key (make-editor "" "HTDP2e") "\b")
+              (make-editor "" "HTDP2e"))
+
+(check-expect (handle-key (make-editor "learning " "") "right")
+              (make-editor "learning " ""))
+
+(check-expect (handle-key (make-editor "learning " "HTDP2e") "\t")
+              (make-editor "learning " "HTDP2e"))
+
+(check-expect (handle-key (make-editor "learning " "HTDP2e") "\r")
+              (make-editor "learning " "HTDP2e"))
+
+; =====================
+; 辅助函数
+; =====================
 ; ===============
 ; 添加单个字符函数
 ; ===============
@@ -110,13 +139,33 @@
    (not (key=? key "\r"))
    (not (key=? key "\b"))))
 
-
 ; 增加单字符，位于光标前字符最后面
 ; editor string -> editor
 (define (insert-char state key)
   (make-editor
    (string-append (editor-pre state) key)
    (editor-post state)))
+
+; 测试 single-char? 函数
+(check-expect (single-char? "a") #true)
+(check-expect (single-char? "ab") #false)
+(check-expect (single-char? "") #false)
+(check-expect (single-char? "left") #false)
+
+; 测试 avoid-chars? 函数
+(check-expect (avoid-chars? "a") #true)
+(check-expect (avoid-chars? "\t") #false)
+(check-expect (avoid-chars? "\r") #false)
+(check-expect (avoid-chars? "\b") #false)
+
+; 测试 insert-char 函数
+(check-expect (insert-char (make-editor "learning " "HTDP2e") "a")
+              (make-editor "learning a" "HTDP2e"))
+(check-expect (insert-char (make-editor "" "HTDP2e") "a")
+              (make-editor "a" "HTDP2e"))
+(check-expect (insert-char (make-editor "learning " "") "a")
+              (make-editor "learning a" ""))
+
 
 ; =============
 ; 光标左移函数
@@ -144,6 +193,26 @@
 (define (pre-last state)
   (substring (editor-pre state) (- (string-length (editor-pre state)) 1)))
 
+; 测试 move-cursor-left 函数
+(check-expect (move-cursor-left (make-editor "learning " "HTDP2e"))
+              (make-editor "learning" " HTDP2e"))
+
+(check-expect (move-cursor-left (make-editor "a" ""))
+              (make-editor "" "a"))
+
+(check-expect (move-cursor-left (make-editor "a" "b"))
+              (make-editor "" "ab"))
+
+; 测试 pre-without-last 函数
+(check-expect (pre-without-last (make-editor "learning " "HTDP2e")) "learning")
+(check-expect (pre-without-last (make-editor "a" "")) "")
+(check-expect (pre-without-last (make-editor "ab" "cd")) "a")
+
+; 测试 pre-last 函数
+(check-expect (pre-last (make-editor "learning " "HTDP2e")) " ")
+(check-expect (pre-last (make-editor "a" "")) "a")
+(check-expect (pre-last (make-editor "ab" "cd")) "b")
+
 ; =============
 ; 光标右移函数
 ; =============
@@ -170,6 +239,32 @@
 (define (post-without-first state)
  (substring (editor-post state) 1 (string-length (editor-post state))))
 
+; 测试 can-move-right? 函数
+(check-expect (can-move-right? (make-editor "learning " "HTDP2e")) #true)
+(check-expect (can-move-right? (make-editor "learning " "")) #false)
+(check-expect (can-move-right? (make-editor "" "a")) #true)
+
+; 测试 move-cursor-right 函数
+(check-expect (move-cursor-right (make-editor "learning " "HTDP2e"))
+              (make-editor "learning H" "TDP2e"))
+
+(check-expect (move-cursor-right (make-editor "" "a"))
+              (make-editor "a" ""))
+
+(check-expect (move-cursor-right (make-editor "a" "b"))
+              (make-editor "ab" ""))
+
+; 测试 post-first 函数
+(check-expect (post-first (make-editor "learning " "HTDP2e")) "H")
+(check-expect (post-first (make-editor "" "a")) "a")
+(check-expect (post-first (make-editor "ab" "cd")) "c")
+
+; 测试 post-without-first 函数
+(check-expect (post-without-first (make-editor "learning " "HTDP2e")) "TDP2e")
+(check-expect (post-without-first (make-editor "" "a")) "")
+(check-expect (post-without-first (make-editor "ab" "cd")) "d")
+
+
 ; ===============
 ; 退格删除字符函数
 ; ===============
@@ -186,13 +281,24 @@
    (pre-without-last state)
    (editor-post state)))
 
-; ===============
-; 测试案例
-; ===============
+; 测试 can-delete? 函数
+(check-expect (can-delete? (make-editor "learning " "HTDP2e")) #true)
+(check-expect (can-delete? (make-editor "" "HTDP2e")) #false)
+(check-expect (can-delete? (make-editor "a" "")) #true)
 
-; 这题耗费了太多时间，测试案例部分，我请 Ai 帮忙写的，这部分的测试案例，后面我会补回来。
-; 依照我的思路，需要同时测正反案例，反面错误案例，需要用到 check-error 这函数，可这里我不想多补课。
-; 所以，暂时只能测试正确案例。
+; 测试 delete-char-left 函数
+(check-expect (delete-char-left (make-editor "learning " "HTDP2e"))
+              (make-editor "learning" "HTDP2e"))
+
+(check-expect (delete-char-left (make-editor "a" ""))
+              (make-editor "" ""))
+
+(check-expect (delete-char-left (make-editor "ab" "cd"))
+              (make-editor "a" "cd"))
+
+; ===============
+; 创建 20 个示例
+; ===============
 
 ; 测试1：向空编辑器添加字符
 (check-expect (handle-key (make-editor "" "") "a")
