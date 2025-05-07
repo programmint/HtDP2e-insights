@@ -108,12 +108,17 @@
 ; - x: 猫在背景内的x坐标
 ; - happiness: 猫的快乐指数 [0-100]
 
-; 验证 vcat 的 x 和 happiness
+; 测试 vcat 的 x 
 (check-expect 
-  (vcat-x (make-vcat 0 100)) 0)
+  (vcat-x (make-vcat 0 100 "right")) 0)
 
+; 测试 vcat 的 happiness
 (check-expect 
-  (vcat-happiness (make-vcat 50 80)) 80)
+  (vcat-happiness (make-vcat 50 80 "right")) 80)
+
+; 测试 vcat 的 direction
+(check-expect 
+  (vcat-direction (make-vcat 50 80 "right")) "right")
 
 ; =====================
 ; 主函数
@@ -129,7 +134,7 @@
    [stop-when end?])) ; 相对 89 题,这里增加了 stop-when 函数
 
 ; =====================
-; 辅函数
+; 辅助函数
 ; ===================== 
 
 ; -----------
@@ -155,16 +160,17 @@
  
 ;   注:题目要求是减少 0.1，但0.1 在视觉上变化太慢，用 0.5 加速视觉变化。
 
-; 验证 next-x
+; 测试 next-x，输入 10 ，下一次滴答 13
 (check-expect
   (next-x (make-vcat 10 57))
   13)
 
-; 验证 next-happiness 
+; 测试 next-happiness，输入 20 ，下一次滴答 19.5
 (check-expect
   (next-happiness (make-vcat 10 20))
   19.5)
 
+; 测试停止状态 next-happiness，输入 0 ，下一次滴答 0 
 (check-expect
   (next-happiness (make-vcat 10 0))
   0)
@@ -186,25 +192,27 @@
                                 (max 0 (* (vcat-happiness state) (+ 1 1/5))))]
    [else state]))
 
-; 验证按上箭头键
+; 测试按上箭头键，快乐指数由 9 增至 12
 (check-expect
   (handle-key (make-vcat 10 9 ) "up")
   (make-vcat 10 12))
 
+; 测试按向上键，快乐指数输入值 102，实际快乐指数值是 100，并不会增长
 (check-expect
   (handle-key (make-vcat 10 102 ) "up")
   (make-vcat 10 100))
 
-; 验证按下箭头键
+; 测试按下箭头键，快乐指数由 10 增加为 12
 (check-expect
   (handle-key (make-vcat 10 10 ) "down")
   (make-vcat 10 12))
 
+; 测试按下箭头键，快乐指数输入值 -1，实为 0 ，不会增加
 (check-expect
   (handle-key (make-vcat 10 -1 ) "down")
   (make-vcat 10 0))
 
-; 验证按其他键
+; 测试按其他键，按左键，快乐指数值不变动
 (check-expect
   (handle-key (make-vcat 10 10 ) "left")
   (make-vcat 10 10))
@@ -213,7 +221,7 @@
 ; 渲染图像函数
 ; -----------
 
-;依据条件,实时渲染图像
+; 依据条件，实时渲染图像
 ; image vcat -> image 
 (define (render state)
   (cond
@@ -265,11 +273,12 @@
 (define (happiness-bar-height state)
   (* CAT-BG-HEIGHT (/ (vcat-happiness state) 100)))
 
-; 验证快乐指数高度
+; 测试快乐指数输入为 0，快乐指数高度输出为 0
 (check-expect 
   (happiness-bar-height (make-vcat 0 0)) 
   0)
 
+; 测试快乐指数输入为 100，快乐指数高度输出：与猫运动背景等高
 (check-expect 
   (happiness-bar-height (make-vcat 0 100))
   CAT-BG-HEIGHT)

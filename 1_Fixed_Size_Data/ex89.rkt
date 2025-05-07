@@ -70,7 +70,7 @@
 ; - x: 猫在背景内的x坐标
 ; - happiness: 猫的快乐指数 [0-100]
 
-; 验证 vcat 的 x 和 happiness
+; 测试 vcat 的 x 和 happiness
 (check-expect 
   (vcat-x (make-vcat 0 100)) 0)
 
@@ -104,7 +104,7 @@
    (next-x state)
    (next-happiness state)))
 
-; 验证 updata-tock 整体更新
+; 测试 updata-tock 整体更新
 (check-expect 
   (update-tock (make-vcat 20 57))
   (make-vcat 23 56.5))
@@ -114,7 +114,7 @@
 (define (next-x state)
   (+ (vcat-x state) 3))
 
-; 验证 next-x
+; 测试 next-x
 (check-expect
   (next-x (make-vcat 10 57))
   13)
@@ -126,7 +126,7 @@
  
 ;   注：题目要求是减少 0.1，但0.1 在视觉上变化太慢，用 0.5 加速视觉变化。
 
-; 验证 next-happiness 
+; 测试 next-happiness 
 (check-expect
   (next-happiness (make-vcat 10 20))
   19.5)
@@ -151,7 +151,7 @@
                                   (max 0 (* (vcat-happiness state) (+ 1 1/5))))]
    [else state]))
 
-; 验证上箭头键
+; 测试上箭头键
 (check-expect
   (handle-key (make-vcat 10 9 ) "up")
   (make-vcat 10 12))
@@ -160,7 +160,7 @@
   (handle-key (make-vcat 10 102 ) "up")
   (make-vcat 10 100))
 
-; 验证下箭头键
+; 测试下箭头键
 (check-expect
   (handle-key (make-vcat 10 10 ) "down")
   (make-vcat 10 12))
@@ -169,7 +169,7 @@
   (handle-key (make-vcat 10 -1 ) "down")
   (make-vcat 10 0))
 
-; 验证其他键
+; 测试其他键
 (check-expect
   (handle-key (make-vcat 10 10 ) "left")
   (make-vcat 10 10))
@@ -209,7 +209,7 @@
 (define ( happiness-bar-height state)
   (* CAT-BG-HEIGHT (/ (vcat-happiness state) 100)))
 
-; 验证快乐指数高度
+; 测试快乐指数高度
 (check-expect 
   (happiness-bar-height (make-vcat 0 0)) 
   0)
@@ -222,7 +222,7 @@
 ; 猫行走图像函数
 ; --------------
 
-; 猫行走主函数
+; 猫行走函数
 ; image number number image -> image 
 (define (render-cat state)
   (place-image 
