@@ -94,7 +94,7 @@
 ; editor string -> editor
 (define (handle-key state key)
   (cond
-   [(and (single-char? key) (avoid-chars? key) (would-fit? state key)) (insert-char state key)]
+   [(and (single-char? key) (ignore-chars? key) (would-fit? state key)) (insert-char state key)]
    [(and (key=? key "left") (can-move-left? state)) (move-cursor-left state)]
    [(and (key=? key "right") (can-move-right? state)) (move-cursor-right state)]
    [(and (key=? key "\b") (can-delete? state)) (delete-char-left state)]
@@ -134,15 +134,15 @@
 (define (single-char? key)
   (= (string-length key) 1))
 
-; 单击按键时，需过滤的字符？
+; 单击按键时，需忽略的字符？
 ; string -> boolean
-(define (avoid-chars? key)
+(define (ignore-chars? key)
   (and
    (not (key=? key "\t"))
    (not (key=? key "\r"))
    (not (key=? key "\b"))))
 
-; 判断插入字符后是否超出编辑器宽度
+; 判断插入字符后是否超出编辑器宽度？
 ; editor string -> boolean
 (define (would-fit? state key)
   (< (content-width state key) SCENE-WIDTH))
@@ -161,8 +161,8 @@
 (define (insert-char state key)
   (make-editor
    (string-append
-   (editor-pre state) key)
-   (editor-post state)))
+    (editor-pre state) key)
+    (editor-post state)))
 
 ; 测试 single-char? 函数
 (check-expect (single-char? "a") #true)
@@ -170,11 +170,11 @@
 (check-expect (single-char? "") #false)
 (check-expect (single-char? "left") #false)
 
-; 测试 avoid-chars? 函数
-(check-expect (avoid-chars? "a") #true)
-(check-expect (avoid-chars? "\t") #false)
-(check-expect (avoid-chars? "\r") #false)
-(check-expect (avoid-chars? "\b") #false)
+; 测试 ignore-chars? 函数
+(check-expect (ignore-chars? "a") #true)
+(check-expect (ignore-chars? "\t") #false)
+(check-expect (ignore-chars? "\r") #false)
+(check-expect (ignore-chars? "\b") #false)
 
 ; 测试 insert-char 函数
 (check-expect (insert-char (make-editor "learning " "HTDP2e") "a")
