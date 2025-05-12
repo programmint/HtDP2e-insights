@@ -431,6 +431,87 @@ handle-key和其他函数负责状态转换，需要完整的状态信息
 #### 函数 vs 常量/变量，定义顺序之区别？
 
 
+#### 数值一律定义为常量吗?
+
+第 5 章的 5.10 及 5.11 节都会大量使用数字，例如：
+
+```
+; 光标后面字符，第一个字符
+; editor -> string
+(define (post-first state)
+  (substring (editor-post state) 0 1))
+```
+这段代码中，0 和 1 要不要分别定义为常量，以便后期修改？
+
+起初，我一律都把数值定义为常量，可后面又感觉不太对。
+
+<br>
+
+问了一下 Ai 总结为 2 部分
+
+**第 1 部分、数值应当定义为常量**
+
+**1.1、有特定含义的魔法数字**
+```
+; 快乐指数每次减少量
+(define HAPPINESS-DECREASE-RATE O.5)
+
+(define (next-happiness state)
+  (max O(-(vcham-happiness state) HAPPINESS-DECREASE-RATE)))
+```
+
+这里的 0.5 有语义，所以最好是定义为常量。
+
+<br>
+
+**1.2、可能需要调整的参数**
+```
+;画布宽度是变色龙高度的倍数
+(define CANVAS-WIDTH-MULTIPLIER 3)
+
+(define CANVAS-WIDTH (* CANVAS-WIDTH-MULTIPLIER (image-height CHAM-IMG)))
+```
+这一部分，其实解题时，已经体会到了，这里的倍数，如果随着需求变动，有可能需要调整，那么这个数字定义为常量，方便后期修改。
+
+<br>
+
+**1.3、在多处使用的相同数值**
+```
+；边距大小
+(define MARGIN 2)
+
+(define HAPPINESS-PANEL-WIDTH （+ MARGIN HAPPINESS-BAR-WIDTH))
+```
+Ai 给的例子并不好，但这一条容易理解。
+
+<br>
+
+**第 2 部分、直接使用数值**
+
+**2.1、简单的数学计算中的因子**
+```
+(define HAPPINESS-BAR-X-POSITION （/ HAPPINESS-PANEL-WIDTH 2))
+```
+将面板宽度除以2是一个标准操作，不需要为2定义常量。
+
+注：这里要区分对待啊，Ai 的很多建议，要综合来看。
+
+<br>
+
+**2.2、明显的默认值**
+```
+(max 0 (-(vcham-happineSs State) HAPPINESS-DECREASE-RATE))
+```
+0 作为最小值或起始值通常不需要定义为常量。
+
+
+<br>
+
+**2.3、单次使用的筒单比例因子**
+```
+(define HAPPINESS-BAR-WIDTHH (* 0.1 (image-width CHAM-IMG)))
+```
+如果某个比例因子只在一处使用且含义直观，可以直接使用。
 
 <br>
 
