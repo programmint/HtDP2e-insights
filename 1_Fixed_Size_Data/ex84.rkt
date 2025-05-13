@@ -88,7 +88,7 @@
 ; editor string -> editor
 (define (handle-key state key)
   (cond
-   [(and (single-char? key) (ignore-chars? key)) (insert-char state key)]
+   [(and (single-char? key) (acceptable-char? key)) (insert-char state key)]
    [(and (key=? key "left") (can-move-left? state)) (move-cursor-left state)]
    [(and (key=? key "right") (can-move-right? state)) (move-cursor-right state)]
    [(and (key=? key "\b") (can-delete? state)) (delete-char-left state)]
@@ -133,7 +133,7 @@
 
 ; 单击按键时，需忽略的字符？
 ; string -> boolean
-(define (ignore-chars? key)
+(define (acceptable-char? key)
   (and
    (not (key=? key "\t"))
    (not (key=? key "\r"))
@@ -152,11 +152,11 @@
 (check-expect (single-char? "") #false)
 (check-expect (single-char? "left") #false)
 
-; 测试 ignore-chars? 函数
-(check-expect (ignore-chars? "a") #true)
-(check-expect (ignore-chars? "\t") #false)
-(check-expect (ignore-chars? "\r") #false)
-(check-expect (ignore-chars? "\b") #false)
+; 测试 acceptable-char? 函数
+(check-expect (acceptable-char? "a") #true)
+(check-expect (acceptable-char? "\t") #false)
+(check-expect (acceptable-char? "\r") #false)
+(check-expect (acceptable-char? "\b") #false)
 
 ; 测试 insert-char 函数
 (check-expect (insert-char (make-editor "learning " "HTDP2e") "a")
