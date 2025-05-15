@@ -56,9 +56,9 @@
 (check-expect (editor-index (make-editor "Learning HTDP2e" 1)) 1)
 (check-expect (editor-index (make-editor "Learning HTDP2e" 0)) 0)
 
-; editor 是结构体，表示结构体文本状态，及文本左侧到光标之间的字符数
+; EDITOR 是结构体，表示文本状态及文本左侧到光标之间的字符数
 (define-struct editor [words index])
-; 一个 editor 是：(make-editor string number)
+; 一个 EDITOR 是：(make-editor String Number)
 ; 解释：
 ; - words ：输入的文本（必须是字符串）
 ; - index ：输入的文本左侧到光标之间的字符数（必须是数字）
