@@ -189,6 +189,7 @@ VSCodium 和 DrRacket 相互配合使用，但 **DrRacket 有些设置，需要�
 
 本书 python 版 ：[CS61A: Online Textbook](https://wizardforcel.gitbooks.io/sicp-py/content/)
 
+#### 8.2、怎么样设计编程语言
 解题过程中，实在好奇，一门编程语言，该怎么设计？问了 AI，推荐了 3 本书，分别是：
 
 [入门之选：程序设计语言概念](https://book.douban.com/subject/1699662/)
@@ -201,7 +202,7 @@ VSCodium 和 DrRacket 相互配合使用，但 **DrRacket 有些设置，需要�
 
 **[TeachYourselfCS-CN](https://github.com/izackwu/TeachYourselfCS-CN)**   
 
-#### 8.2 、公众号
+#### 8.3、公众号
 之前，解题思路，公布至自己的公众号。
 
 而今，
