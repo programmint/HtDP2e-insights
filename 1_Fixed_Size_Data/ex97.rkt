@@ -22,6 +22,7 @@
                               BACKGROUND)))
 
 ; 要理解这个表达式的意思，我给你加一个空格，就看清楚了：
+
 (tank-render
   (fired-tank s)
 ; （这里加了一空格）
