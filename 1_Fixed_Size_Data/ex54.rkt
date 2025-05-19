@@ -190,13 +190,9 @@
   (place-images
    (list END-MSG ROCKET)
    (list (make-posn END-MSG-X END-MSG-Y)
-         (make-posn X-START-POS 0))
+         (make-posn X-START-POS (tock-y-h state)))
    BG))
 
-; 注
-; end-scene 这个函数必须有 state 这个参数，否则 big-bang 调用它时就无法把终止时的 worldstate 传递进去。
-; 也就无法根据最后的状态，渲染出你想要的终止画面。
-; 所以，end-scene 的参数不能省，哪怕暂时用不到，也要保留。
 
 ; =====================
 ; 程序启动
