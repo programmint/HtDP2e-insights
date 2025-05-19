@@ -1,4 +1,4 @@
-; 54.优化版
+; 54
 
 ; =============
 ; 全局目的
@@ -14,6 +14,7 @@
 ; - IMG / img : image（图片）
 ; - MSG: message（信息）
 ; - POS: position （位置）
+; - RKT: rocket（火箭）
 
 ; =============
 ; 数据定义
@@ -48,6 +49,10 @@
 (define IDLE-MSG (text "按下空格,发射火箭" 16 "black"))
 (define IDLE-MSG-POS (make-posn (- BG-W 470) (- BG-H 25)))
 (define RKT-IDLE-POS (make-posn X-START-POS Y-START-POS))
+
+ ; 注：
+ ; 当时恰巧查到了 make-posn 而已，感觉两个数据放在一起，比较方便。
+ ; 其实还没有进行到结构体的章节。
 
 ; 倒计时数字位置
 (define COUNTDOWN-POS (make-posn X-START-POS ( - BG-H 35)))
