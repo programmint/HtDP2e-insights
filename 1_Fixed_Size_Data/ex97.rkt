@@ -71,3 +71,27 @@
 
 ; 结论 3
 ; 太空游戏图像呈现，要格外注意渲染次序，同时还有一个条件，即 UFO 会随机跳动，99 题就是解决这个问题。
+
+; =============
+; 补充
+; =============
+
+; SIGS -> Image
+; renders the given game state on top of BACKGROUND 
+; for examples see figure 32
+(define (si-render s)
+  (cond
+    [(aim? s)
+     (tank-render (aim-tank s)
+                  (ufo-render (aim-ufo s) BACKGROUND))]
+    [(fired? s)
+     (tank-render
+      (fired-tank s)
+      (ufo-render (fired-ufo s)
+                  (missile-render (fired-missile s)
+                                  BACKGROUND)))]))
+
+; 解释：
+; 教材中这一段愿望清单，目的是告诉你，渲染是有次序
+; 因此使用了多层嵌套的方式，看请那一张图片在上面
+; 这种写法直观，可是嵌套多了，容易混淆，更好的方法是采用 place-images 
