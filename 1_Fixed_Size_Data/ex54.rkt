@@ -9,20 +9,20 @@
 ; =========
 ; 缩写说明
 ; =========
-; - BG: background（背景）
-; - CTR：center (中心)
-; - IMG / img : image（图片）
-; - MSG: message（信息）
-; - POS: position （位置）
-; - RKT: rocket（火箭）
+; - BG: background(背景)
+; - CTR:center (中心)
+; - IMG / img : image(图片)
+; - MSG: message(信息)
+; - POS: position (位置)
+; - RKT: rocket(火箭)
 
 ; =============
 ; 数据定义
 ; =============
-; LR（launching rocket的缩写）是下列之一：
+; LR(launching rocket的缩写)是下列之一:
 ; - "resting"
-; - NonnegativeNumber（非负数）
-; 解释："resting"表示火箭停在地面
+; - NonnegativeNumber(非负数)
+; 解释:"resting"表示火箭停在地面
 ; 数值表示火箭飞行时的高度
 
 ; =============
@@ -50,9 +50,9 @@
 (define IDLE-MSG-POS (make-posn (- BG-W 470) (- BG-H 25)))
 (define RKT-IDLE-POS (make-posn X-START-POS Y-START-POS))
 
- ; 注：
- ; 当时恰巧查到了 make-posn 而已，感觉两个数据放在一起，比较方便。
- ; 其实还没有进行到结构体的章节。
+; 注:
+; 当时恰巧查到了 make-posn 而已,感觉两个数据放在一起,比较方便。
+; 其实还没有进行到结构体的章节。
 
 ; 倒计时数字位置
 (define COUNTDOWN-POS (make-posn X-START-POS ( - BG-H 35)))
@@ -75,10 +75,10 @@
 ; worldstate -> any
 (define (main state)
   (big-bang state
-   (to-draw draw-rkt)
-   (on-tick tock-y-h)
-   (on-key handle-key)
-   (stop-when rkt-off-canvas? end-scene)))
+    (to-draw draw-rkt)
+    (on-tick tock-y-h)
+    (on-key handle-key)
+    (stop-when rkt-off-canvas? end-scene)))
 
 ; --------------------
 ; 渲染函数
@@ -117,11 +117,11 @@
 ; worldstate -> image
 (define (draw-rkt state)
   (cond
-   [(and (string? state )(string=? state "resting"))
-    (place-images
-     (list IDLE-MSG ROCKET )
-     (list IDLE-MSG-POS RKT-IDLE-POS) 
-     BG)]
+    [(and (string? state )(string=? state "resting"))
+     (place-images
+      (list IDLE-MSG ROCKET )
+      (list IDLE-MSG-POS RKT-IDLE-POS) 
+      BG)]
 
     [(and (number? state) (<= -3 state -1))
      (place-images
@@ -148,11 +148,11 @@
 ; worldstate -> worldstate
 (define (tock-y-h state)
   (cond
-   [(and (string? state) (string=? state "resting")) state]
-   [(and  (number? state) (<= -3 state) ( < state -1)) (+ state 1)]
-   [(and (number? state) (= state -1)) Y-START-POS]
-   [(and (number? state) (> state 0)) (- state YDELTA)]
-   [else state]))
+    [(and (string? state) (string=? state "resting")) state]
+    [(and  (number? state) (<= -3 state) ( < state -1)) (+ state 1)]
+    [(and (number? state) (= state -1)) Y-START-POS]
+    [(and (number? state) (> state 0)) (- state YDELTA)]
+    [else state]))
 
 ; --------------------
 ; 按键函数
@@ -167,24 +167,24 @@
 ; worldstate key -> worldstate
 (define (handle-key state a-key)
   (cond
-   [(and (string? state) (string=? state "resting") (key=? a-key " ")) -3]
-   [else state]))
+    [(and (string? state) (string=? state "resting") (key=? a-key " ")) -3]
+    [else state]))
 
 ; --------------------
-; 判断是否停止飞行？
+; 判断是否停止飞行?
 ; --------------------
 
 ; 测试火箭停止飞行函数
 (check-expect (rkt-off-canvas? 0 ) #true)
 
-; 火箭飞出背景，则停止飞行
+; 火箭飞出背景,则停止飞行
 ; worldstate -> boolean
 (define (rkt-off-canvas? state)
   (cond
-   [(and (number? state) (= state 0)) #true]
-   [else #false]))
+    [(and (number? state) (= state 0)) #true]
+    [else #false]))
 
-; 停止飞行后，显示最后一帧图像
+; 停止飞行后,显示最后一帧图像
 ; worldstate -> image
 (define (end-scene state)
   (place-images
