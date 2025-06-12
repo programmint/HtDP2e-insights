@@ -89,7 +89,7 @@
  (draw-rkt "resting")
  (place-images
   (list IDLE-MSG ROCKET)
-  (list IDLE-MSG-POS RKT-IDLE-POS )
+  (list IDLE-MSG-POS RKT-IDLE-POS)
   BG))
 
 (check-expect 
@@ -102,7 +102,7 @@
 (check-expect 
  (draw-rkt -1)
  (place-images
-  (list (text (number->string -1 ) 20 "red") ROCKET)
+  (list (text (number->string -1) 20 "red") ROCKET)
   (list COUNTDOWN-POS RKT-IDLE-POS)
   BG))
 
@@ -110,7 +110,7 @@
  (draw-rkt 100)
  (place-images
   (list FLYING-MSG ROCKET)
-  (list FLYING-MSG-POS (make-posn X-START-POS 100 )) 
+  (list FLYING-MSG-POS (make-posn X-START-POS 100)) 
   BG))
 
 ; 实时渲染火箭图像
