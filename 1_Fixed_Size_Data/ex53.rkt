@@ -35,8 +35,8 @@
 ; LR KeyEvent -> LR
 (define (handle-key rkt-state a-key)
   (cond
-   [(and (string? rkt-state) (key=? a-key " ")) Y-START-POS] 
-   [else rkt-state])) 
+    [(and (string? rkt-state) (key=? a-key " ")) Y-START-POS] 
+    [else rkt-state])) 
 
 ; 时钟函数
 ; 时钟每滴答一次,火箭上升 3像素
@@ -44,8 +44,8 @@
 ; LR -> LR
 (define (tock-y-h rkt-state)
   (cond
-   [(and (number? rkt-state) (> rkt-state 0)) (- rkt-state YDELTA)] 
-   [else rkt-state]))
+    [(and (number? rkt-state) (> rkt-state 0)) (- rkt-state YDELTA)] 
+    [else rkt-state]))
 
 ; 火箭函数
 ; 时钟滴答一次,实时绘制火箭一次
@@ -55,8 +55,8 @@
   (place-image ROCKET
                X-START-POS
                (cond
-                [(string? rkt-state) Y-START-POS]
-                [(>= rkt-state 0) rkt-state])
+                 [(string? rkt-state) Y-START-POS]
+                 [(>= rkt-state 0) rkt-state])
                BACKG))
 
 ; 注,到了第 55 题,就会提醒你,place-image  可以单独定义为函数。
