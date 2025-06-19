@@ -21,7 +21,8 @@
 ;; 我采用的方法，则是 place-images，嵌套 place-image 理解起来比较麻烦
 
 ;; 渲染次序
-;; 无论是嵌套 place-iamge，还是利用 place-images，都要注意渲染次序
+;; 无论是嵌套 place-image，还是利用 place-images，都要注意渲染次序
+
 
 ;;; ==========================================
 ;;; 术语
@@ -220,22 +221,22 @@
 ;; SIGS -> SIGS
 (define (sigs-next-posn state delta)
   (make-sigs
-    (missile-next-posn state)
-    (ufo-next-posn state delta) 
-    (tank-next-posn state)))
+   (missile-next-posn state)
+   (ufo-next-posn state delta) 
+   (tank-next-posn state)))
 
 ;; 测试 sigs-next-posn 函数
 (check-expect 
-  (sigs-next-posn 
-    (make-sigs #false (make-ufo 50 50) (make-tank 100 5)) 
-    10)
-  (make-sigs #false (make-ufo 60 53) (make-tank 105 5)))
+ (sigs-next-posn 
+  (make-sigs #false (make-ufo 50 50) (make-tank 100 5)) 
+  10)
+ (make-sigs #false (make-ufo 60 53) (make-tank 105 5)))
 
 (check-expect 
-  (sigs-next-posn 
-    (make-sigs (make-missile 100 200) (make-ufo 50 50) (make-tank 100 5)) 
-    10)
-  (make-sigs (make-missile 100 192.5) (make-ufo 60 53) (make-tank 105 5)))
+ (sigs-next-posn 
+  (make-sigs (make-missile 100 200) (make-ufo 50 50) (make-tank 100 5)) 
+  10)
+ (make-sigs (make-missile 100 192.5) (make-ufo 60 53) (make-tank 105 5)))
 
 
 ;; ===========================================
@@ -248,51 +249,51 @@
   (cond
     [(boolean? (sigs-missile state)) #false]
     [(missile? (sigs-missile state))
-      (make-missile 
-        (missile-x (sigs-missile state))
-        (- (missile-y (sigs-missile state)) MISSILE-SPEED))]))
+     (make-missile 
+      (missile-x (sigs-missile state))
+      (- (missile-y (sigs-missile state)) MISSILE-SPEED))]))
   
 
 ;; 计算 UFO 新位置
 ;; SIGS -> UFO
 (define (ufo-next-posn state delta)
   (make-ufo
-    (ufo-x-in-boundary (+ (ufo-x (sigs-ufo state)) delta))
-    (+ (ufo-y (sigs-ufo state)) UFO-SPEED)))
+   (ufo-x-in-boundary (+ (ufo-x (sigs-ufo state)) delta))
+   (+ (ufo-y (sigs-ufo state)) UFO-SPEED)))
 
 ;; 发射火箭状态，计算 TANK 新位置
 ;; SIGS -> TANK
 (define (tank-next-posn state)
   (make-tank
-    (tank-x-in-boundary (+ (tank-x (sigs-tank state)) (tank-vel (sigs-tank state))))
-    (tank-vel (sigs-tank state))))
+   (tank-x-in-boundary (+ (tank-x (sigs-tank state)) (tank-vel (sigs-tank state))))
+   (tank-vel (sigs-tank state))))
 
 ;; 测试 missile-next-posn 函数
 (check-expect 
-  (missile-next-posn (make-sigs #false (make-ufo 50 50) (make-tank 100 5)))
-  #false)
+ (missile-next-posn (make-sigs #false (make-ufo 50 50) (make-tank 100 5)))
+ #false)
 
 (check-expect 
-  (missile-next-posn (make-sigs (make-missile 100 200) (make-ufo 50 50) (make-tank 100 5)))
-  (make-missile 100 192.5))
+ (missile-next-posn (make-sigs (make-missile 100 200) (make-ufo 50 50) (make-tank 100 5)))
+ (make-missile 100 192.5))
 
 ;; 测试 ufo-next-posn 函数
 (check-expect 
-  (ufo-next-posn (make-sigs #false (make-ufo 50 50) (make-tank 100 5)) 10)
-  (make-ufo 60 53))
+ (ufo-next-posn (make-sigs #false (make-ufo 50 50) (make-tank 100 5)) 10)
+ (make-ufo 60 53))
 
 (check-expect 
-  (ufo-next-posn (make-sigs #false (make-ufo 290 50) (make-tank 100 5)) 10)
-  (make-ufo 150 53))  ; UFO 触边界，回到中心
+ (ufo-next-posn (make-sigs #false (make-ufo 290 50) (make-tank 100 5)) 10)
+ (make-ufo 150 53))  ; UFO 触边界，回到中心
 
 ;; 测试 tank-next-posn 函数
 (check-expect 
-  (tank-next-posn (make-sigs #false (make-ufo 50 50) (make-tank 100 5)))
-  (make-tank 105 5))
+ (tank-next-posn (make-sigs #false (make-ufo 50 50) (make-tank 100 5)))
+ (make-tank 105 5))
 
 (check-expect 
-  (tank-next-posn (make-sigs #false (make-ufo 50 50) (make-tank 310 5)))
-  (make-tank 315 5)) 
+ (tank-next-posn (make-sigs #false (make-ufo 50 50) (make-tank 310 5)))
+ (make-tank 315 5)) 
 
 
 ;; ===========================================
@@ -353,26 +354,26 @@
 
 ; 测试 si-control 函数
 (check-expect 
-  (si-control (make-sigs #false (make-ufo 50 50) (make-tank 100 5)) "left")
-  (make-sigs #false (make-ufo 50 50) (make-tank 100 -5)))
+ (si-control (make-sigs #false (make-ufo 50 50) (make-tank 100 5)) "left")
+ (make-sigs #false (make-ufo 50 50) (make-tank 100 -5)))
 
 (check-expect 
-  (si-control (make-sigs #false (make-ufo 50 50) (make-tank 100 -5)) "right")
-  (make-sigs #false (make-ufo 50 50) (make-tank 100 5)))
+ (si-control (make-sigs #false (make-ufo 50 50) (make-tank 100 -5)) "right")
+ (make-sigs #false (make-ufo 50 50) (make-tank 100 5)))
 
 (check-expect 
-  (si-control (make-sigs #false (make-ufo 50 50) (make-tank 100 5)) " ")
-  (make-sigs (make-missile 100 292.5) (make-ufo 50 50) (make-tank 100 5)))
+ (si-control (make-sigs #false (make-ufo 50 50) (make-tank 100 5)) " ")
+ (make-sigs (make-missile 100 292.5) (make-ufo 50 50) (make-tank 100 5)))
 
 ; 测试已有导弹时按空格无效
 (check-expect 
-  (si-control (make-sigs (make-missile 100 200) (make-ufo 50 50) (make-tank 100 5)) " ")
-  (make-sigs (make-missile 100 200) (make-ufo 50 50) (make-tank 100 5)))
+ (si-control (make-sigs (make-missile 100 200) (make-ufo 50 50) (make-tank 100 5)) " ")
+ (make-sigs (make-missile 100 200) (make-ufo 50 50) (make-tank 100 5)))
 
 ;; 测试无效按键
 (check-expect 
-  (si-control (make-sigs #false (make-ufo 50 50) (make-tank 100 5)) "a")
-  (make-sigs #false (make-ufo 50 50) (make-tank 100 5)))
+ (si-control (make-sigs #false (make-ufo 50 50) (make-tank 100 5)) "a")
+ (make-sigs #false (make-ufo 50 50) (make-tank 100 5)))
 
 
 ;; ===========================================
@@ -383,20 +384,20 @@
 ;; SIGS -> SIGS
 (define (tank-move-left state)
   (make-sigs
-    (sigs-missile state)
-    (sigs-ufo state)
-    (make-tank
-      (tank-x (sigs-tank state))
-      (- (abs (tank-vel (sigs-tank state)))))))
+   (sigs-missile state)
+   (sigs-ufo state)
+   (make-tank
+    (tank-x (sigs-tank state))
+    (- (abs (tank-vel (sigs-tank state)))))))
 
 ;; 测试 tank-move-left 函数
 (check-expect 
-  (tank-move-left (make-sigs #false (make-ufo 50 50) (make-tank 100 5)))
-  (make-sigs #false (make-ufo 50 50) (make-tank 100 -5)))
+ (tank-move-left (make-sigs #false (make-ufo 50 50) (make-tank 100 5)))
+ (make-sigs #false (make-ufo 50 50) (make-tank 100 -5)))
 
 (check-expect 
-  (tank-move-left (make-sigs (make-missile 100 200) (make-ufo 50 50) (make-tank 100 5)))
-  (make-sigs (make-missile 100 200) (make-ufo 50 50) (make-tank 100 -5)))
+ (tank-move-left (make-sigs (make-missile 100 200) (make-ufo 50 50) (make-tank 100 5)))
+ (make-sigs (make-missile 100 200) (make-ufo 50 50) (make-tank 100 -5)))
 
 
 ;; ===========================================
@@ -407,20 +408,20 @@
 ;; SIGS -> SIGS
 (define (tank-move-right state)
   (make-sigs
-    (sigs-missile state)
-    (sigs-ufo state)
-    (make-tank
-      (tank-x (sigs-tank state))
-      (abs (tank-vel (sigs-tank state))))))
+   (sigs-missile state)
+   (sigs-ufo state)
+   (make-tank
+    (tank-x (sigs-tank state))
+    (abs (tank-vel (sigs-tank state))))))
 
 ;; 测试 tank-move-right 函数
 (check-expect 
-  (tank-move-right (make-sigs #false (make-ufo 50 50) (make-tank 100 -5)))
-  (make-sigs #false (make-ufo 50 50) (make-tank 100 5)))
+ (tank-move-right (make-sigs #false (make-ufo 50 50) (make-tank 100 -5)))
+ (make-sigs #false (make-ufo 50 50) (make-tank 100 5)))
 
 (check-expect 
-  (tank-move-right (make-sigs (make-missile 100 200) (make-ufo 50 50) (make-tank 100 -5)))
-  (make-sigs (make-missile 100 200) (make-ufo 50 50) (make-tank 100 5)))
+ (tank-move-right (make-sigs (make-missile 100 200) (make-ufo 50 50) (make-tank 100 -5)))
+ (make-sigs (make-missile 100 200) (make-ufo 50 50) (make-tank 100 5)))
 
 
 ;; ===========================================
@@ -442,13 +443,13 @@
 
 ;; 测试 missile-to-fired 函数
 (check-expect 
-  (missile-to-fired (make-sigs #false (make-ufo 50 50) (make-tank 100 5)))
-  (make-sigs (make-missile 100 292.5) (make-ufo 50 50) (make-tank 100 5)))
+ (missile-to-fired (make-sigs #false (make-ufo 50 50) (make-tank 100 5)))
+ (make-sigs (make-missile 100 292.5) (make-ufo 50 50) (make-tank 100 5)))
 
 ;; 测试已有导弹时发射无效
 (check-expect 
-  (missile-to-fired (make-sigs (make-missile 100 200) (make-ufo 50 50) (make-tank 100 5)))
-  (make-sigs (make-missile 100 200) (make-ufo 50 50) (make-tank 100 5)))
+ (missile-to-fired (make-sigs (make-missile 100 200) (make-ufo 50 50) (make-tank 100 5)))
+ (make-sigs (make-missile 100 200) (make-ufo 50 50) (make-tank 100 5)))
 
 
 ;;; ===========================================
@@ -514,12 +515,12 @@
 
 ;; 测试 si-game-over? 函数
 (check-expect 
-  (si-game-over? (make-sigs #false (make-ufo 50 50) (make-tank 100 5)))
-  #false)
+ (si-game-over? (make-sigs #false (make-ufo 50 50) (make-tank 100 5)))
+ #false)
 
 (check-expect 
-  (si-game-over? (make-sigs #false (make-ufo 50 297) (make-tank 100 5)))
-  #true)
+ (si-game-over? (make-sigs #false (make-ufo 50 297) (make-tank 100 5)))
+ #true)
 
 
 ;; ===========================================
@@ -553,10 +554,10 @@
 ;; 判断导弹是否击中了 UFO ?
 ;; - 导弹中心点与 UFO 中心点的距离，小于 1/2 UFO 宽度
 ;; SIGS -> Boolean
- (define (missile-hit-ufo? state)
-   (and
-    (missile? (sigs-missile state))
-    (<= (hit-distance state) HALF-UFO-WIDTH)))
+(define (missile-hit-ufo? state)
+  (and
+   (missile? (sigs-missile state))
+   (<= (hit-distance state) HALF-UFO-WIDTH)))
 
 ;; 注
 ;; ufo-x 或 missile-x ，这里的 x 值，就是图片中心 x 值，place-image or place-images 的机制决定的
@@ -594,12 +595,12 @@
 
 ;; 测试 hit-distance 函数
 (check-expect 
-  (hit-distance (make-sigs (make-missile 30 160) (make-ufo 30 159) (make-tank 100 5)))
-  1)
+ (hit-distance (make-sigs (make-missile 30 160) (make-ufo 30 159) (make-tank 100 5)))
+ 1)
 
 (check-expect 
-  (hit-distance (make-sigs (make-missile 0 0) (make-ufo 3 4) (make-tank 100 5)))
-  5)
+ (hit-distance (make-sigs (make-missile 0 0) (make-ufo 3 4) (make-tank 100 5)))
+ 5)
 
 
 ;; ===========================================
