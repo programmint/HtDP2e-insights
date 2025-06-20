@@ -1,4 +1,4 @@
-; 4
+; ex004
 
 (define str "ABCDEFGHI") ; 用 ABCDEFGHI，便于核对答案
 (define natural-number 8)

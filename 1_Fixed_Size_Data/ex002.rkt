@@ -1,4 +1,4 @@
-; 2
+; ex002
 
 (define prefix "hello")
 (define suffix "world")

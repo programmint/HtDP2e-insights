@@ -1,4 +1,4 @@
-; 6
+; ex006
 
 (define cat (bitmap "images/cat.png")) 
 

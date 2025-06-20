@@ -1,4 +1,4 @@
-; 8
+; ex008
 
   (define (image-classify img)  
     (cond

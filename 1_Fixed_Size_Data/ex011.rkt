@@ -1,4 +1,4 @@
-; 11
+; ex011
 
 (define (distance x y)
     (sqrt(+ (sqr x) (sqr y))))

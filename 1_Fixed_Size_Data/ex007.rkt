@@ -1,4 +1,4 @@
-; 7
+; ex007
 
 (define sunny #true)
 (define friday #false)
