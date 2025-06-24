@@ -120,7 +120,7 @@
 ;; - x 是 UFO 从左到右的位置
 ;; - y 是 UFO 从上到下的位置
 
-;; 测试 UFO 结构体
+; 测试 UFO 结构体
 (check-expect (ufo-x (make-ufo 50 20)) 50)
 (check-expect (ufo-y (make-ufo 50 20)) 20)
 
@@ -223,7 +223,7 @@
    (ufo-next-posn state delta) 
    (tank-next-posn state)))
 
-;; 测试 sigs-next-posn 函数
+; 测试 sigs-next-posn 函数
 (check-expect 
  (sigs-next-posn 
   (make-sigs #false (make-ufo 50 50) (make-tank 100 5)) 
