@@ -122,7 +122,7 @@
 ;; - x 是 UFO 从左到右的位置
 ;; - y 是 UFO 从上到下的位置
 
-;; 测试 UFO 结构体
+; 测试 UFO 结构体
 (check-expect (ufo-x (make-ufo 50 20)) 50)
 (check-expect (ufo-y (make-ufo 50 20)) 20)
 
@@ -139,7 +139,7 @@
 ;; - x 是 TANK 从左到右的位置（高度固定为 TANK-HEIGHT)
 ;; - vel 是 TANK 的运动速度，+ 表示向右，- 表示向左
 
-;; 测试 TANK 结构体
+; 测试 TANK 结构体
 (check-expect (tank-x (make-tank 50 20)) 50)
 (check-expect (tank-vel (make-tank 50 20)) 20)
 
@@ -155,7 +155,7 @@
 ;; - x 是 MISSILE 从左到右的位置
 ;; - y 是 MISSILE 从上到下的位置
 
-;; 测试 MISSILE 结构体
+; 测试 MISSILE 结构体
 (check-expect (missile-x (make-missile 50 60)) 50)
 (check-expect (missile-y (make-missile 50 60)) 60)
 
@@ -198,8 +198,8 @@
 (define (si-move state)
   (si-move-proper state (- (random JUMP-RANGE) JUMP-OFFSET)))
 
-;; 注
-;; 该函数无法测试
+; 注
+; 该函数无法测试
 
 
 ;; ===========================================
@@ -211,7 +211,7 @@
     [(aim? state) (aim-next-posn state delta)]
     [(fired? state) (fired-next-posn state delta)]))
 
-;; 测试 si-move-proper 函数
+; 测试 si-move-proper 函数
 (check-expect 
   (si-move-proper (make-aim (make-ufo 50 50) (make-tank 100 5)) 10)
   (make-aim (make-ufo 60 53) (make-tank 105 5)))
@@ -239,12 +239,12 @@
    (fired-ufo-next-posn state delta)
    (fired-tank-next-posn state)))
 
-;; 测试 aim-next-posn 函数
+; 测试 aim-next-posn 函数
 (check-expect 
   (aim-next-posn (make-aim (make-ufo 50 50) (make-tank 100 5)) 10)
   (make-aim (make-ufo 60 53) (make-tank 105 5)))
 
-;; 测试 fired-next-posn 函数
+; 测试 fired-next-posn 函数
 (check-expect 
   (fired-next-posn (make-fired (make-missile 100 200) (make-ufo 50 50) (make-tank 100 5)) 10)
   (make-fired (make-missile 100 192.5) (make-ufo 60 53) (make-tank 105 5)))
@@ -265,7 +265,7 @@
   
     [else x])) 
 
-;; 测试坦克边界处理
+; 测试坦克边界处理
 (check-expect (tank-x-in-boundary -20) 315)
 (check-expect (tank-x-in-boundary 320) -15)
 (check-expect (tank-x-in-boundary 150) 150)
@@ -283,7 +283,7 @@
   
     [else x]))
 
-;; 测试 UFO 边界处理
+; 测试 UFO 边界处理
 (check-expect (ufo-x-in-boundary 5) 150)
 (check-expect (ufo-x-in-boundary 295) 150)
 (check-expect (ufo-x-in-boundary 100) 100)
@@ -307,12 +307,12 @@
     (tank-x-in-boundary (+ (tank-x (aim-tank state)) (tank-vel (aim-tank state))))
    (tank-vel (aim-tank state))))
 
-;; 测试 aim-tank-next-posn 函数
+; 测试 aim-tank-next-posn 函数
 (check-expect 
   (aim-tank-next-posn (make-aim (make-ufo 50 50) (make-tank 100 5)))
   (make-tank 105 5))
 
-;; 测试坦克边界循环
+; 测试坦克边界循环
 (check-expect 
   (aim-tank-next-posn (make-aim (make-ufo 50 50) (make-tank 310 5)))
   (make-tank 315 5))
@@ -344,17 +344,17 @@
     (tank-x-in-boundary (+ (tank-x (fired-tank state)) (tank-vel (fired-tank state))))
     (tank-vel (fired-tank state))))
 
-;; 测试 fired-missile-next-posn 函数
+; 测试 fired-missile-next-posn 函数
 (check-expect 
   (fired-missile-next-posn (make-fired (make-missile 100 200) (make-ufo 50 50) (make-tank 100 5)))
   (make-missile 100 192.5))
 
-;; 测试 fired-ufo-next-posn 函数
+; 测试 fired-ufo-next-posn 函数
 (check-expect 
   (fired-ufo-next-posn (make-fired (make-missile 100 200) (make-ufo 50 50) (make-tank 100 5)) 10)
   (make-ufo 60 53))
 
-;; 测试 fired-tank-next-posn 函数
+; 测试 fired-tank-next-posn 函数
 (check-expect 
   (fired-tank-next-posn (make-fired (make-missile 100 200) (make-ufo 50 50) (make-tank 100 5)))
   (make-tank 105 5))
@@ -376,7 +376,7 @@
     [(and (aim? state) (key=? key " ")) (aim-to-fired state)]
     [else state]))
 
-;; 测试 si-control 函数
+; 测试 si-control 函数
 (check-expect 
   (si-control (make-aim (make-ufo 50 50) (make-tank 100 5)) "left")
   (make-aim (make-ufo 50 50) (make-tank 100 -5)))
@@ -417,7 +417,7 @@
                      (make-tank (tank-x (fired-tank state))
                                 (- (abs (tank-vel (fired-tank state))))))]))
 
-;; 测试 tank-move-left 函数
+; 测试 tank-move-left 函数
 (check-expect 
   (tank-move-left (make-aim (make-ufo 50 50) (make-tank 100 5)))
   (make-aim (make-ufo 50 50) (make-tank 100 -5)))
@@ -446,7 +446,7 @@
                      (make-tank (tank-x (fired-tank state))
                                 (abs (tank-vel (fired-tank state)))))]))
 
-;; 测试 tank-move-right 函数
+; 测试 tank-move-right 函数
 (check-expect 
   (tank-move-right (make-aim (make-ufo 50 50) (make-tank 100 -5)))
   (make-aim (make-ufo 50 50) (make-tank 100 5)))
@@ -473,7 +473,7 @@
                    (aim-tank state))]
     [else state]))
 
-;; 测试 aim-to-fired 函数
+; 测试 aim-to-fired 函数
 (check-expect 
   (aim-to-fired (make-aim (make-ufo 50 50) (make-tank 100 5)))
   (make-fired (make-missile 100 292.5) (make-ufo 50 50) (make-tank 100 5)))
@@ -544,7 +544,7 @@
     [(and (fired? state) (missile-hit-ufo? state)) #true]
     [else #false]))
 
-;; 测试 si-game-over? 函数
+; 测试 si-game-over? 函数
 (check-expect 
   (si-game-over? (make-aim (make-ufo 50 50) (make-tank 100 5)))
   #false)
@@ -568,21 +568,21 @@
   (>= (ufo-y (current-ufo state))
       UFO-LANDED-DISTANCE))
 
-;; 测试 UFO 是否触地 - aim 状态
+; 测试 UFO 是否触地 - aim 状态
 (check-expect
  (ufo-landed?
   (make-aim
    (make-ufo 30 297) (make-tank 50 196)))
  #true)
 
-;; 测试 UFO 是否触地 - fired 状态
+; 测试 UFO 是否触地 - fired 状态
 (check-expect
  (ufo-landed?
   (make-fired
    (make-missile 50 30) (make-ufo 30 297) (make-tank 50 196)))
  #true)
 
-;; 测试 UFO 未触地情况
+; 测试 UFO 未触地情况
 (check-expect
  (ufo-landed?
   (make-aim
@@ -607,7 +607,7 @@
 ;; 这里已体现出来：
 ;; 把太空游戏划分为两种数据类型，有点麻烦，因为需要不停判断是处在那种状态下。
 
-;; 测试 MISSILE 是否击中 UFO - 击中
+; 测试 MISSILE 是否击中 UFO - 击中
 (check-expect
  (missile-hit-ufo?
   (make-fired
@@ -616,7 +616,7 @@
    (make-tank 20 196)))
  #true)
 
-;; 测试 MISSILE 是否击中 UFO - 未击中
+; 测试 MISSILE 是否击中 UFO - 未击中
 (check-expect
  (missile-hit-ufo?
   (make-fired
@@ -636,7 +636,7 @@
   (sqrt (+ (sqr (- (ufo-x (fired-ufo state)) (missile-x (fired-missile state))))
            (sqr (- (ufo-y (fired-ufo state)) (missile-y (fired-missile state)))))))
 
-;; 测试 hit-distance 函数
+; 测试 hit-distance 函数
 (check-expect 
   (hit-distance (make-fired (make-missile 30 160) (make-ufo 30 159) (make-tank 100 5)))
   1)
@@ -672,7 +672,7 @@
   (cond
     [(fired? state) (fired-missile state)]))
 
-;; 测试 current-ufo 函数
+; 测试 current-ufo 函数
 (check-expect 
   (current-ufo (make-aim (make-ufo 50 50) (make-tank 100 5)))
   (make-ufo 50 50))
@@ -681,7 +681,7 @@
   (current-ufo (make-fired (make-missile 100 200) (make-ufo 50 50) (make-tank 100 5)))
   (make-ufo 50 50))
 
-;; 测试 current-tank 函数
+; 测试 current-tank 函数
 (check-expect 
   (current-tank (make-aim (make-ufo 50 50) (make-tank 100 5)))
   (make-tank 100 5))
@@ -690,7 +690,7 @@
   (current-tank (make-fired (make-missile 100 200) (make-ufo 50 50) (make-tank 100 5)))
   (make-tank 100 5))
 
-;; 测试 current-missile 函数
+; 测试 current-missile 函数
 (check-expect 
   (current-missile (make-fired (make-missile 100 200) (make-ufo 50 50) (make-tank 100 5)))
   (make-missile 100 200))

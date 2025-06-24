@@ -6,7 +6,6 @@
 ;; - TANK 发射 MISSILE ，打击 UFO
 ;; - UFO 触地或击中 UFO，游戏结束，并渲染游戏结束画面
 
-
 ;;; ==========================================
 ;;; 说明
 ;;; ==========================================
@@ -22,7 +21,6 @@
 
 ;; 渲染次序
 ;; 无论是嵌套 place-image，还是利用 place-images，都要注意渲染次序
-
 
 ;;; ==========================================
 ;;; 术语
@@ -77,7 +75,7 @@
 (define JUMP-RANGE 21)
 
 ;; UFO 左右随机跳动距离(偏移距离)
-(define JUMP-OFFSET 10 )
+(define JUMP-OFFSET 10)
 
 ;; TANK 位于地面高度
 (define TANK-HEIGHT
@@ -131,7 +129,7 @@
 ;;; TANK 数据定义
 ;;; ==========================================
 
-;; 修改结构体定义
+
 ;; TANK 是结构体，表示坦克在背景中的位置
 (define-struct tank [x vel])
 ;; 一个 TANK 是 (make-tank number number)
@@ -139,7 +137,7 @@
 ;; - x 是 TANK 从左到右的位置（高度固定为 TANK-HEIGHT)
 ;; - vel 是 TANK 的运动速度，+ 表示向右，- 表示向左
 
-;; 测试 TANK 结构体
+; 测试 TANK 结构体
 (check-expect (tank-x (make-tank 50 20)) 50)
 (check-expect (tank-vel (make-tank 50 20)) 20)
 
@@ -162,7 +160,7 @@
 ;;  - x 是 MISSILE 从左到右的位置
 ;;  - y 是 MISSILE 从上到下的位置
 
-;; 测试 MISSILE
+; 测试 MISSILE
 (check-expect #false #false)
 (check-expect (missile-x (make-missile 50 60)) 50)
 (check-expect (missile-y (make-missile 50 60)) 60)
@@ -174,7 +172,7 @@
 
 ;; SIGS.v2 是结构体，表示MISSILE、UFO、TANK 位于背景中
 (define-struct sigs [missile ufo tank])
-;; (make-sigs MissileOrNot UFO TANK) ; 我习惯，数据定义里把渲染次序设置好
+;; (make-sigs MissileOrNot UFO TANK) ; 数据定义顺序 = 渲染次序
 ;; 解释:表示空间入侵者游戏的完整状态
 
 
@@ -201,8 +199,8 @@
 (define (si-move state)
   (si-move-proper state (- (random JUMP-RANGE) JUMP-OFFSET)))
 
-;; 注
-;; 该函数无法测试
+; 注
+; 该函数无法测试
 
 
 ;; ===========================================
@@ -268,7 +266,7 @@
    (tank-x-in-boundary (+ (tank-x (sigs-tank state)) (tank-vel (sigs-tank state))))
    (tank-vel (sigs-tank state))))
 
-;; 测试 missile-next-posn 函数
+; 测试 missile-next-posn 函数
 (check-expect 
  (missile-next-posn (make-sigs #false (make-ufo 50 50) (make-tank 100 5)))
  #false)
@@ -277,7 +275,7 @@
  (missile-next-posn (make-sigs (make-missile 100 200) (make-ufo 50 50) (make-tank 100 5)))
  (make-missile 100 192.5))
 
-;; 测试 ufo-next-posn 函数
+; 测试 ufo-next-posn 函数
 (check-expect 
  (ufo-next-posn (make-sigs #false (make-ufo 50 50) (make-tank 100 5)) 10)
  (make-ufo 60 53))
@@ -286,7 +284,7 @@
  (ufo-next-posn (make-sigs #false (make-ufo 290 50) (make-tank 100 5)) 10)
  (make-ufo 150 53))  ; UFO 触边界，回到中心
 
-;; 测试 tank-next-posn 函数
+; 测试 tank-next-posn 函数
 (check-expect 
  (tank-next-posn (make-sigs #false (make-ufo 50 50) (make-tank 100 5)))
  (make-tank 105 5))
@@ -312,7 +310,7 @@
   
     [else x])) 
 
-;; 测试坦克边界处理
+; 测试坦克边界处理
 (check-expect (tank-x-in-boundary -20) 315)
 (check-expect (tank-x-in-boundary 320) -15)
 (check-expect (tank-x-in-boundary 150) 150)
@@ -330,7 +328,7 @@
   
     [else x]))
 
-;; 测试 UFO 边界处理
+; 测试 UFO 边界处理
 (check-expect (ufo-x-in-boundary 5) 150)
 (check-expect (ufo-x-in-boundary 295) 150)
 (check-expect (ufo-x-in-boundary 100) 100)
@@ -370,7 +368,7 @@
  (si-control (make-sigs (make-missile 100 200) (make-ufo 50 50) (make-tank 100 5)) " ")
  (make-sigs (make-missile 100 200) (make-ufo 50 50) (make-tank 100 5)))
 
-;; 测试无效按键
+; 测试无效按键
 (check-expect 
  (si-control (make-sigs #false (make-ufo 50 50) (make-tank 100 5)) "a")
  (make-sigs #false (make-ufo 50 50) (make-tank 100 5)))
@@ -390,7 +388,7 @@
     (tank-x (sigs-tank state))
     (- (abs (tank-vel (sigs-tank state)))))))
 
-;; 测试 tank-move-left 函数
+; 测试 tank-move-left 函数
 (check-expect 
  (tank-move-left (make-sigs #false (make-ufo 50 50) (make-tank 100 5)))
  (make-sigs #false (make-ufo 50 50) (make-tank 100 -5)))
@@ -414,7 +412,7 @@
     (tank-x (sigs-tank state))
     (abs (tank-vel (sigs-tank state))))))
 
-;; 测试 tank-move-right 函数
+; 测试 tank-move-right 函数
 (check-expect 
  (tank-move-right (make-sigs #false (make-ufo 50 50) (make-tank 100 -5)))
  (make-sigs #false (make-ufo 50 50) (make-tank 100 5)))
@@ -441,12 +439,12 @@
       (sigs-tank state))]
     [else state]))
 
-;; 测试 missile-to-fired 函数
+; 测试 missile-to-fired 函数
 (check-expect 
  (missile-to-fired (make-sigs #false (make-ufo 50 50) (make-tank 100 5)))
  (make-sigs (make-missile 100 292.5) (make-ufo 50 50) (make-tank 100 5)))
 
-;; 测试已有导弹时发射无效
+; 测试已有导弹时发射无效
 (check-expect 
  (missile-to-fired (make-sigs (make-missile 100 200) (make-ufo 50 50) (make-tank 100 5)))
  (make-sigs (make-missile 100 200) (make-ufo 50 50) (make-tank 100 5)))
@@ -513,7 +511,7 @@
     [(and (missile? (sigs-missile state)) (missile-hit-ufo? state)) #true]
     [else #false]))
 
-;; 测试 si-game-over? 函数
+; 测试 si-game-over? 函数
 (check-expect 
  (si-game-over? (make-sigs #false (make-ufo 50 50) (make-tank 100 5)))
  #false)
@@ -533,7 +531,7 @@
   (>= (ufo-y (sigs-ufo state))
       UFO-LANDED-DISTANCE))
 
-;; 测试 ufo-landed? 函数
+; 测试 ufo-landed? 函数
 (check-expect
  (ufo-landed? (make-sigs #false (make-ufo 30 297) (make-tank 50 5)))
  #true)
@@ -559,12 +557,12 @@
    (missile? (sigs-missile state))
    (<= (hit-distance state) HALF-UFO-WIDTH)))
 
-;; 注
-;; ufo-x 或 missile-x ，这里的 x 值，就是图片中心 x 值，place-image or place-images 的机制决定的
-;; 这里已体现出来：
-;; 把太空游戏划分为两种数据类型，有点麻烦，因为需要不停判断是处在那种状态下。
+; 注
+; ufo-x 或 missile-x ，这里的 x 值，就是图片中心 x 值，place-image or place-images 的机制决定的
+; 这里已体现出来：
+; 把太空游戏划分为两种数据类型，有点麻烦，因为需要不停判断是处在那种状态下。
 
-;; 测试 MISSILE 是否击中 UFO - 击中
+; 测试 MISSILE 是否击中 UFO - 击中
 (check-expect
  (missile-hit-ufo?
   (make-sigs
@@ -573,7 +571,7 @@
    (make-tank 20 196)))
  #true)
 
-;; 测试 MISSILE 是否击中 UFO - 未击中
+; 测试 MISSILE 是否击中 UFO - 未击中
 (check-expect
  (missile-hit-ufo?
   (make-sigs
@@ -593,7 +591,7 @@
   (sqrt (+ (sqr (- (ufo-x (sigs-ufo state)) (missile-x (sigs-missile state))))
            (sqr (- (ufo-y (sigs-ufo state)) (missile-y (sigs-missile state)))))))
 
-;; 测试 hit-distance 函数
+; 测试 hit-distance 函数
 (check-expect 
  (hit-distance (make-sigs (make-missile 30 160) (make-ufo 30 159) (make-tank 100 5)))
  1)
@@ -621,7 +619,7 @@
     ; 此情况理论上不应发生，为稳健起见，显示一个通用结束画面。
     [else GLOBAL-IMG]))
 
-;; 以下是渲染函数专用辅助函数
+; 以下是渲染函数专用辅助函数
 
 ;; 导弹击中 UFO ，显示TANK，提示
 ;; SIGS -> Image
