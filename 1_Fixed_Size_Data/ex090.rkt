@@ -110,15 +110,12 @@
 
 ; 测试 vcat 的 x 
 (check-expect 
-  (vcat-x (make-vcat 0 100 "right")) 0)
+  (vcat-x (make-vcat 0 100)) 0)
 
 ; 测试 vcat 的 happiness
 (check-expect 
-  (vcat-happiness (make-vcat 50 80 "right")) 80)
+  (vcat-happiness (make-vcat 50 80 )) 80)
 
-; 测试 vcat 的 direction
-(check-expect 
-  (vcat-direction (make-vcat 50 80 "right")) "right")
 
 ; =====================
 ; 主函数
