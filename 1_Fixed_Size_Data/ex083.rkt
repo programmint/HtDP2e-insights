@@ -90,9 +90,9 @@
 ; 结构体
 ; =============
 
-; editor 是结构体，表示文本编辑器里的文字
+; Editor 是结构体，表示文本编辑器里的文字
 (define-struct editor [pre post])
-; 一个 editor 是：(make-editor String String)
+; 一个 Editor 是：(make-editor String String)
 ; 解释：
 ; - pre  ：光标前文本（必须是字符串）
 ; - post ：光标后文本（必须是字符串）
@@ -104,7 +104,7 @@
 ; 目的：读入 editor-instance，渲染为图像。
 ; 不变式：(invariants)
 ;   光标置于 pre 与 post 之间
-; editor -> image 
+; Editor -> image 
 
 (define (render state)
   (overlay/align "left" "center"

@@ -56,9 +56,9 @@
 (check-expect (editor-index (make-editor "Learning HTDP2e" 1)) 1)
 (check-expect (editor-index (make-editor "Learning HTDP2e" 0)) 0)
 
-; EDITOR 是结构体，表示文本状态及文本左侧到光标之间的字符数
+; Editor 是结构体，表示文本状态及文本左侧到光标之间的字符数
 (define-struct editor [words index])
-; 一个 EDITOR 是：(make-editor String Number)
+; 一个 Editor 是：(make-editor String Number)
 ; 解释：
 ; - words ：输入的文本（必须是字符串）
 ; - index ：输入的文本左侧到光标之间的字符数（必须是数字）
@@ -66,7 +66,7 @@
 ; =====================
 ; 主函数
 ; =====================
-; editor -> editor
+; Editor -> Editor
 (define (run state)
   (big-bang state
    [on-key handle-key]
@@ -77,7 +77,7 @@
 ; --------------------
 
 ; 满足限定条件，实时返回编辑器状态（光标前后字符串更新，索引更新）
-; editor sting keyevent -> editor 
+; Editor sting keyevent -> Editor 
 (define (handle-key state key)
   (cond
    [(and (valid-index? state) (single-char? key) (acceptable-char? key) (would-fit? state key)) 
@@ -103,7 +103,7 @@
 (check-expect (valid-index? (make-editor "Learn HTDP2e" 5)) #true)
 
 ; 判断输入或更新状态后的索引，是否有效？
-; ediotr key -> boolean
+; Editor key -> boolean
 (define (valid-index? state)
   (and 
    (>= (editor-index state) 0)
@@ -151,12 +151,12 @@
 (check-expect (would-fit? (make-editor "Learn HTDP2e" 6) "11111111111111111111111111111") #false)
 
 ; 判断插入字符后是否超出编辑器宽度？(文字+光标)
-; editor string -> boolean
+; Editor string -> boolean
 (define (would-fit? state key)
   (< (content-width state key) SCENE-WIDTH))
 
 ; 计算内容总宽度
-; editor string -> number
+; Editor string -> number
 (define (content-width state key)
   (+
    (image-width (text (editor-words state) TEXT-SIZE CONTENT-COLOR))
@@ -169,7 +169,7 @@
   (make-editor "LAearn HTDP2e" 2))
 
 ; 插入单字符，返回编辑器新状态
-; editor string -> editor
+; Editor string -> Editor
 (define (insert-char state key)
   (make-editor
    (string-append
@@ -193,7 +193,7 @@
   #false)
 
 ; 判断光标是否可以左移？
-; editor -> boolean
+; Editor -> boolean
 (define (can-move-left? state)
   (> (editor-index state) 0))
 
@@ -203,7 +203,7 @@
   (make-editor "Learn HTDP2e" 5))
 
 ; 光标左移，返回新状态编辑器
-; editor -> editor
+; Editor -> Editor
 (define (move-cursor-left state)
   (make-editor
    (editor-words state)
@@ -224,7 +224,7 @@
   #true)
 
 ; 判断光标是否可以右移？
-; editor -> boolean
+; Editor -> boolean
 (define (can-move-right? state)
   (< (editor-index state) (string-length (editor-words state))))
 
@@ -234,7 +234,7 @@
   (make-editor "Learn HTDP2e" 7))
 
 ; 光标右移，返回新状态编辑器
-; editor -> editor
+; Editor -> Editor
 (define (move-cursor-right state)
   (make-editor
    (editor-words state)
@@ -255,7 +255,7 @@
   #false)
 
 ; 判断是否可以删除字符？
-; editor -> boolean
+; Editor -> boolean
 (define (can-delete? state)
  (> (editor-index state) 0))
 
@@ -265,7 +265,7 @@
   (make-editor "Learn TDP2e" 6))
 
 ; 删除光标前的一个字符
-; editor -> editor
+; Editor -> Editor
 (define (delete-char-left state)
   (make-editor 
    (string-append
@@ -281,7 +281,7 @@
 ; ----------------------------------
 
 ; 依据输入，渲染整体图像
-; editor image  -> image 
+; Editor image  -> image 
 
 (define (render state)
   (cond
