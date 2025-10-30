@@ -69,22 +69,18 @@
 ;; MISSILE 上升速度
 (define MISSILE-SPEED (* 2.5 UFO-SPEED))
 
-;; MISSILE与 UFO 图像之间的安全距离
-(define SAFE-DISTANCE
-  (/ (image-width UFO-IMG) 2))
-
 ;; UFO 触地距离
 (define UFO-LANDED-DISTANCE
   (- SCENE-HEIGHT (/ (image-height UFO-IMG) 2)))
 
 ;; UFO 跳动距离
-(define JUMP-RANGE 21)
+(define UFO-JUMP-RANGE 21)
 
 ;; UFO 左右随机跳动距离(偏移距离)
-(define JUMP-OFFSET 10)
+(define UFO-JUMP-OFFSET 10)
 
 ;; TANK 位于地面高度
-(define TANK-HEIGHT
+(define TANK-Y-POS
   (- SCENE-HEIGHT (/ (image-height TANK-IMG) 2)))
 
 ;; TANK 一半宽度
@@ -140,14 +136,14 @@
 (define-struct tank [x vel])
 ;; 一个 TANK 是 (make-tank number number)
 ;; 解释:
-;; - x 是 TANK 从左到右的位置（高度固定为 TANK-HEIGHT)
+;; - x 是 TANK 从左到右的位置（高度固定为 TANK-Y-POS)
 ;; - vel 是 TANK 的运动速度，+ 表示向右，- 表示向左
 
 ; 测试 TANK 结构体
 (check-expect (tank-x (make-tank 50 20)) 50)
 (check-expect (tank-vel (make-tank 50 20)) 20)
 
-
+ 
 ;;; ==========================================
 ;;; MISSILE 数据定义
 ;;; ==========================================
@@ -203,7 +199,7 @@
 ;; 时钟滴答一次，更新一次状态
 ;; SIGS -> SIGS
 (define (si-move state)
-  (si-move-proper state (- (random JUMP-RANGE) JUMP-OFFSET)))
+  (si-move-proper state (- (random UFO-JUMP-RANGE) UFO-JUMP-OFFSET)))
 
 ; 注
 ; 该函数无法测试
@@ -440,7 +436,7 @@
      (make-sigs
       (make-missile
        (tank-x (sigs-tank state))
-       (- TANK-HEIGHT HALF-MISSILE-HEIGHT))
+       (- TANK-Y-POS HALF-MISSILE-HEIGHT))
       (sigs-ufo state)
       (sigs-tank state))]
     [else state]))
@@ -480,7 +476,7 @@
           (ufo-y (sigs-ufo state)))
          (make-posn
           (tank-x (sigs-tank state))
-          TANK-HEIGHT))
+          TANK-Y-POS))
    SCENE))
 
 
@@ -499,7 +495,7 @@
           (ufo-y (sigs-ufo state)))
          (make-posn
           (tank-x (sigs-tank state))
-          TANK-HEIGHT))
+          TANK-Y-POS))
    SCENE))
 
 
@@ -633,7 +629,7 @@
   (place-images
    (list END-MSG TANK-IMG)
    (list (make-posn (/ SCENE-WIDTH 2) (/ SCENE-HEIGHT 2))
-         (make-posn (tank-x (sigs-tank state)) TANK-HEIGHT))
+         (make-posn (tank-x (sigs-tank state)) TANK-Y-POS))
    SCENE))
 
 ;; 第2、UFO 触地，显示提示、UFO、坦克
@@ -643,7 +639,7 @@
    (list END-MSG UFO-IMG TANK-IMG)
    (list (make-posn (/ SCENE-WIDTH 2) (/ SCENE-HEIGHT 2))
          (make-posn (ufo-x (sigs-ufo state)) (ufo-y (sigs-ufo state)))
-         (make-posn (tank-x (sigs-tank state)) TANK-HEIGHT))
+         (make-posn (tank-x (sigs-tank state)) TANK-Y-POS))
    SCENE))
 
 
@@ -652,4 +648,3 @@
 ;;; ===========================================
 
 (si-game (make-sigs #false (make-ufo 120 2) (make-tank 100 3)))
-
