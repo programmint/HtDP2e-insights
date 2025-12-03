@@ -429,7 +429,7 @@
 ;; ===========================================
 
 ;; 按下空格，发射火箭
-;; SIGS -> UFO 
+;; SIGS -> SIGS 
 (define (missile-to-fired state)
   (cond
     [(boolean? (sigs-missile state)) 
