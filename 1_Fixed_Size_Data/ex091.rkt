@@ -103,6 +103,7 @@
 ; 一个 vcat 是 (make-vcat number number string)
 ; 解释
 ; - x: 猫在背景内的x坐标 [0,CAT-BG-WIDTH]
+; - 注：猫的 y 坐标恒定为常量，本题中恒定不变。
 ; - happiness: 猫的快乐指数 [0-100]
 ; - direction：猫运动的方向，"right" 或 "left"
 
