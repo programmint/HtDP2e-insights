@@ -1,0 +1,13 @@
+# 忽略系统文件
+.DS_Store
+Thumbs.db
+
+# 忽略编辑器配置
+.vscode/
+.idea/
+
+# 忽略编译产生的临时文件 (Racket)
+compiled/
+*.zo
+*.bak
+*~
