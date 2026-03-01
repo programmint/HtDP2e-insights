@@ -1,0 +1,8 @@
+# check-expect 语法规则
+
+( check-expect ***actual-value***  ***expected-value*** )  
+
+经常忘记 check-expect 用法，特意查了一下。 
+
+
+
