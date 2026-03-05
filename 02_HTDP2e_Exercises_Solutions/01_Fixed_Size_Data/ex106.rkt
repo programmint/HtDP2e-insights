@@ -10,7 +10,7 @@
 ;; | [全局目的]
 ;; | 设计 cat-cham 程序,输入一位置和一动物,然后穿过画布,注意各自的规则。
 ;; |
-;; | [注]
+;; | [注]:
 ;; | 本题中文版翻译有严重失误,详见:[6.6 - 一只动物吗?] 
 ;; | 链接:https://github.com/programmint/HtDP2e-insights/blob/main/03_Archive_Translation_Notes/%E7%AC%AC6%E7%AB%A0-%E6%96%87%E5%8F%A5%E6%A0%A1%E5%AF%B9%E5%BD%95/6.6-P119-%E4%B8%80%E5%8F%AA%E5%8A%A8%E7%89%A9%E5%90%97.md      
 ;; | 106 题与 107 题,两结构体合一,条件略繁,难度则未胜之前。
