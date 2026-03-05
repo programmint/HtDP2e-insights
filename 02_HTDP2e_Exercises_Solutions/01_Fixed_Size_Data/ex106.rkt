@@ -4,7 +4,7 @@
 
 ;;; ex106
 ;;
-;; 设计 cat-cham 程序,输入一位置和一动物,然后穿过画布,注意各自的规则。
+;; 设计 cat-cham 程序，输入一位置和一动物，然后穿过画布，注意各自的规则。
 ;;
 ;; 术语
 ;; - h-val: happiness-value (快乐指数数值)
@@ -53,12 +53,12 @@
 
 ;; === VCat 数据定义 ===
 
-;; VCat 是结构体,表示猫的 3 个状态
+;; VCat 是结构体，表示猫的 3 个状态
 (define-struct vcat [x happiness direction])
 ;; 一个 VCat 是 (make-vcat number number direction)
 ;; - x: 猫在背景内的 x 坐标(y 坐标恒定为常量)
 ;; - happiness: 猫的快乐指数 [0-100]
-;; - direction: 猫运动的方向,"right" 或 "left"
+;; - direction: 猫运动的方向，"right" 或 "left"
 
 ;; --- tests ---
 (check-expect (make-vcat 0 100 "left") (make-vcat 0 100 "left"))
@@ -69,12 +69,12 @@
 
 ;; === VCham 数据定义 ===
 
-;; VCham 是结构体,表示变色龙的 3 个状态
+;; VCham 是结构体，表示变色龙的 3 个状态
 (define-struct vcham [x happiness color])
 ;; 一个 VCham 是 (make-vcham number number string)
 ;; - x: 变色龙在画布中的 x 坐标(y 坐标恒定为常量)
 ;; - happiness: 变色龙的快乐值 [0,100]
-;; - color: 变色龙的色彩,"red","green","blue"
+;; - color: 变色龙的色彩，"red"，"green"，"blue"
 
 ;; --- tests ---
 (check-expect (make-vcham 10 100 "red") (make-vcham 10 100 "red"))
@@ -212,8 +212,8 @@
 
 ;; === 猫状态更新 ===
 
-;; 猫来回折返时会"穿墙"(中心点到达边界才转向),
-;; 算是视觉瑕疵,但不影响核心逻辑。
+;; 猫来回折返时会"穿墙"(中心点到达边界才转向)，
+;; 算是视觉瑕疵，但不影响核心逻辑。
 
 ;; VCat -> VCat
 (define (update-vcat state)
@@ -259,7 +259,7 @@
 
 ;; === 猫按键 ===
 
-;; 快乐指数的变化值,采用第 47 题的设定
+;; 快乐指数的变化值，采用第 47 题的设定
 ;; VCat KeyEvent -> VCat
 (define (handle-key-vcat state key)
   (cond
