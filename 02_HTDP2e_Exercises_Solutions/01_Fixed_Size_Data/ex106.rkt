@@ -109,7 +109,7 @@
   (cond
     [(vcat? state) (update-vcat state)]
     [(vcham? state) (update-vcham state)]
-    [else "请输入正确的数据格式"]))
+    [else (error "dispatch-tick:期望输入 VAnimal 格式数据，但收到未知格式数据")]))
 
 ;; --- tests ---
 (check-expect
@@ -120,9 +120,9 @@
  (dispatch-tick (make-vcham 100 80 "red"))
  (update-vcham (make-vcham 100 80 "red")))
 
-(check-expect
+(check-error
  (dispatch-tick "hello HTDP2e")
- "请输入正确的数据格式")
+ "dispatch-tick:期望输入 VAnimal 格式数据，但收到未知格式数据")
 
 
 ;; === 按键函数(分发) ===
@@ -132,7 +132,7 @@
   (cond
     [(vcat? state) (handle-key-vcat state key)]
     [(vcham? state) (handle-key-vcham state key)]
-    [else "请输入正确的数据格式"]))
+    [else (error "dispatch-key:期望输入 VAnimal 及 key 格式数据，但收到未知格式数据")]))
 
 ;; --- tests ---
 (check-expect
@@ -143,9 +143,9 @@
  (dispatch-key (make-vcham 100 80 "red") "r")
  (handle-key-vcham (make-vcham 100 80 "red") "r"))
 
-(check-expect
+(check-error
  (dispatch-key "hello_HTDP2e" "a")
- "请输入正确的数据格式")
+ "dispatch-key:期望输入 VAnimal 及 key 格式数据，但收到未知格式数据")
 
 
 ;; === 渲染函数(分发) ===
@@ -155,7 +155,7 @@
   (cond
     [(vcat? state) (render-vcat state)]
     [(vcham? state) (render-vcham state)]
-    [else "请输入正确的数据格式"]))
+    [else (error "dispatch-render:期望输入 VAnimal 格式数据，但收到未知格式数据")]))
 
 ;; --- tests ---
 (check-expect
@@ -166,9 +166,9 @@
  (dispatch-render (make-vcham 100 80 "red"))
  (render-vcham (make-vcham 100 80 "red")))
 
-(check-expect
- (dispatch-render "hello HTDP2e")
- "请输入正确的数据格式")
+(check-error
+ (dispatch-render "hello_HTDP2e")
+ "dispatch-render:期望输入 VAnimal 格式数据，但收到未知格式数据")
 
 
 ;; === 停止函数 ===
@@ -194,7 +194,7 @@
   (cond
     [(vcat? state) (end-scene-vcat state)]
     [(vcham? state) (end-scene-vcham state)]
-    [else (error "end-scene: unknown animal state")]))
+    [else (error "dispatch-end-scene:期望输入 VAnimal 格式数据，但收到未知格式数据")]))
 
 ;; --- tests ---
 (check-expect 
@@ -207,7 +207,7 @@
 
 (check-error
  (dispatch-end-scene "hello")
- "end-scene: unknown animal state")
+ "dispatch-end-scene:期望输入 VAnimal 格式数据，但收到未知格式数据")
 
 
 ;; === 猫状态更新 ===
@@ -491,6 +491,7 @@
                (/ HAPPINESS-PANEL-WIDTH 2)
                (- SCENE-HEIGHT (/ (* SCENE-HEIGHT (/ 0 100)) 2))
                HAPPINESS-PANEL))
+
 
 ;; 限制快乐指数值位于[0,100]
 ;; Number -> Number
