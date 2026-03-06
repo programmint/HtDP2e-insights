@@ -465,7 +465,8 @@
   (place-image
    (rectangle HAPPINESS-BAR-WIDTH
               (* SCENE-HEIGHT (/ happiness-level 100))
-              "solid" "red")
+              "solid" 
+              (if (>= happiness-level 20) "green" "red"))
    (/ HAPPINESS-PANEL-WIDTH 2)
    (- SCENE-HEIGHT (/ (* SCENE-HEIGHT (/ happiness-level 100)) 2))
    HAPPINESS-PANEL))
@@ -475,7 +476,8 @@
               (place-image
                (rectangle HAPPINESS-BAR-WIDTH
                           (* SCENE-HEIGHT (/ 20 100))
-                          "solid" "red")
+                          "solid" 
+                          (if (>= 20 20) "green" "red"))
                (/ HAPPINESS-PANEL-WIDTH 2)
                (- SCENE-HEIGHT (/ (* SCENE-HEIGHT (/ 20 100)) 2))
                HAPPINESS-PANEL))
@@ -484,7 +486,8 @@
               (place-image
                (rectangle HAPPINESS-BAR-WIDTH
                           (* SCENE-HEIGHT (/ 0 100))
-                          "solid" "red")
+                          "solid" 
+                          (if (>= 0 20) "green" "red"))
                (/ HAPPINESS-PANEL-WIDTH 2)
                (- SCENE-HEIGHT (/ (* SCENE-HEIGHT (/ 0 100)) 2))
                HAPPINESS-PANEL))
