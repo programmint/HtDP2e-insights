@@ -47,6 +47,7 @@
 ;; 倒计时数字大小
 (define COUNTDOWN-FONT-SIZE 36)
 
+
 ;; === LightState 数据定义 ===
 
 ;; LightState 是三者之一:
@@ -55,6 +56,7 @@
 
 ;; 数据定义，为什么不用结构体？
 ;; 请参阅：01_My_HtDP2e_Thinking_Path > 01_The_Rational_Path > 019_[Arch]_结构体，为什么偏偏在 108 题失效了？.md
+
 
 ;; === 主程序 ===
 
