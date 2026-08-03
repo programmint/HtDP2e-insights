@@ -18,6 +18,17 @@
 ;; - MSG / msg : message (信息)
 ;; - POS/pos : position (位置)
 
+;; 注
+;; 第 9 章使用自引用数据定义进行设计（9 Designing with Self-Referential Data Definitions）中
+;; 提到了怎么样写目的声明：
+;; 中文版原文：“在编写目的声明时，关注函数计算的内容，而不是如何计算它，尤其是它如何遍历输入的数据实例。”
+;; 英文版：When you do formulate the purpose statement, focus on what the function computes not how it goes about it, 
+;; especially not how it goes through instances of the given data.
+
+;; 所以，针对该题的目的声明，重新进行了修改
+;; ---2026.7.2
+
+
 
 ;; === 常量 ===
 
@@ -297,7 +308,7 @@
 
 
 ;; Any -> Boolean 
-;; 检测输入是否为合法 VCat?
+;; 判定输入是否为合法 VCat?
 (define (valid-vcat? state)
   (and (vcat? state)
        (number? (vcat-x state))
@@ -361,7 +372,7 @@
 
 
 ;; Any -> Boolean
-;; 检验输入值是不是合法的 VCham 数据?
+;; 判定输入值是不是合法的 VCham 数据?
 (define (valid-vcham? state)
   (and (vcham? state)
        (number? (vcham-x state))
@@ -436,7 +447,7 @@
 
 
 ;; Any -> Boolean
-;; 检查输入信息是否是 Zoo?
+;; 判定输入信息是否是 Zoo?
 (define (valid-zoo? state)
   (and (zoo? state) 
        (valid-vcat? (zoo-vcat state))
@@ -471,9 +482,10 @@
 ;; --- tests Done -合法Zoo?---
 
 
-;; === 主程序 ===
+;; === Zoo 游戏 ===
 
 ;; Zoo -> Zoo
+;; 启动 Zoo 游戏
 (define (cham-and-cat state)
   (cond
     [(valid-zoo? state) (big-bang state
@@ -484,9 +496,10 @@
     [else (error "cham-and-cat:期望输入 Zoo 格式数据，但收到未知格式数据")]))
 
 
-;; === 状态更新函数 ===
+;; === Zoo 状态 ===
 
 ;; Zoo -> Zoo
+;; 时钟滴答一次，Zoo 状态更新一次
 (define (update-zoo state)
   (make-zoo
    (update-vcat (zoo-vcat state))
@@ -506,11 +519,10 @@
 ;; --- tests Done ---
 
 
-;; === 按键函数 ===
+;; === Zoo 按键 ===
 
 ;; Zoo KeyEvent -> Zoo
-;; 接收焦点按键，控制动物焦点，动物数值不变;
-;; 其他按键，分发至焦点动物去处理。
+;; 根据用户输入事件，计算 Zoo 的下一状态
 (define (dispatch-key state key)
   (cond
     ;; 按 k 键，控制 cat
@@ -613,10 +625,10 @@
 ;; --- Tests Done - 按键函数 ---
 
 
-;; === 渲染函数 ===
+;; === Zoo 图像 ===
 
 ;; Zoo -> Image
-;; 实时渲染游戏图像
+;; 生成 Zoo 图像
 (define (render-zoo state)
   (place-images
     (list
@@ -644,17 +656,17 @@
 
     SCENE))
 
-;; --- Tests - 渲染函数 ---
-;; 渲染函数只是一分发函数，不涉及计算
+;; --- Tests - 游戏图像 ---
+;; 游戏图像只是一分发函数，不涉及计算
 ;; 其作用只是排版，需要用视觉去验证，这里面没有业务逻辑，所以不必添加测试案例。
 
-;; --- Tests Done - 渲染函数 ---
+;; --- Tests Done - 游戏图像 ---
 
 
-;; === 渲染游戏状态栏 ===
+;; === Zoo 状态栏图像 ===
 
 ;; Number Number String -> Image
-;; 渲染游戏状态栏：快乐指数行和游戏指南，放置在透明底板上
+;; 生成 Zoo 状态栏图像
 (define (render-zoo-status cat-happiness cham-happiness focus-key)
   (place-images
     (list
@@ -673,18 +685,18 @@
 
     STATUS-SCENE))
 
-;; --- Tests - 渲染游戏状态栏 ---
-;; 同理，渲染游戏状态栏函数，也是一分发函数，不涉及计算。
+;; --- Tests - Zoo 状态栏图像 ---
+;; 同理，游戏状态栏图像，也是一分发函数，不涉及计算。
 ;; 其作用也是排版，需要用视觉去验证，这里面没有业务逻辑，所以不必添加测试案例。
 
-;; --- Tests Done - 渲染游戏状态栏 ---
+;; --- Tests Done - Zoo 状态栏图像 ---
 
 
 
-;; === 渲染快乐指数行 ===
+;; === Zoo 快乐指数行图像 ===
 
 ;; Number Number String -> Image
-;; 渲染快乐指数行:猫图标+快乐值、焦点文字、变色龙快乐值+图标
+;; 生成 Zoo 快乐指数行图像
 (define (render-happiness-row cat-happiness cham-happiness focus-key)
   (beside/align "bottom"
     MARGIN
@@ -695,51 +707,47 @@
     (cham-status cham-happiness)
     MARGIN)) 
 
-;; --- tests - 渲染快乐指数行---
-;; 同理，渲染快乐指数行函数，也是一分发函数，不涉及计算。
+;; --- tests - Zoo 快乐指数行图像---
+;; 同理，Zoo 快乐指数行图像，也是一分发函数，不涉及计算。
 ;; 其作用也是排版，需要用视觉去验证，这里面没有业务逻辑，所以不必添加测试案例。
 
-;; --- tests Done - 渲染快乐指数行 ---
+;; --- tests Done - Zoo 快乐指数行图像 ---
 
-
-;; === 渲染猫快乐指数 ===
 
 ;; Number -> Image
-;; 渲染猫具体快乐指数:猫图标 + 右对齐血条，底部对齐
+;; 生成猫快乐指数图像
 (define (cat-status happiness)
   (beside/align "bottom"
     CAT-ICON
     MARGIN
     (render-bar happiness "right")))
 
-;; --- tests - 渲染猫快乐指数---
-;; 同理，渲染猫快乐指数函数，也是一分发函数，不涉及计算。
+;; --- tests - VCat 快乐指数图像---
+;; 同理，猫快乐指数图像，也是一分发函数，不涉及计算。
 ;; 其作用也是排版，需要用视觉去验证，这里面没有业务逻辑，所以不必添加测试案例。
 
-;; --- tests Done - 渲染猫快乐指数 ---
+;; --- tests Done - VCat 快乐指数图像 ---
 
-
-;; === 渲染变色龙快乐指数 ===
 
 ;; Number -> Image
-;; 渲染具体变色龙快乐指数:左对齐血条 + 变色龙图标，底部对齐
+;; 生成变色龙快乐指数图像
 (define (cham-status happiness)
   (beside/align "bottom"
     (render-bar happiness "left")
     MARGIN
     CHAM-ICON))
 
-;; --- tests - 渲染变色龙快乐指数---
-;; 同理，渲染变色龙快乐指数函数，也是一分发函数，不涉及计算。
+;; --- tests - 变色龙快乐指数图像---
+;; 同理，变色龙快乐指数图像，也是一分发函数，不涉及计算。
 ;; 其作用也是排版，需要用视觉去验证，这里面没有业务逻辑，所以不必添加测试案例。
 
-;; --- tests Done - 渲染变色龙快乐指数 ---
+;; --- tests Done - 变色龙快乐指数图像 ---
 
 
-;; === 快乐指数条 ===
+;; === Zoo 快乐指数条图像 ===
 
 ;; Number String -> Image
-;; 生成快乐指数条:固定宽度底框，实际血条按指定方向对齐
+;; 生成快乐指数条图像
 (define (render-bar happiness animal-align)
   (overlay/align animal-align "middle"
     (rectangle (* (/ happiness 100) HAPPINESS-BAR-WIDTH)
@@ -750,7 +758,7 @@
                    HAPPINESS-BAR-LOW-COLOR))
     HAPPINESS-BG))
 
-;; --- tests -快乐指数条 ---
+;; --- tests -Zoo 快乐指数条图像 ---
 
 ;; 快乐值 100，快乐指数满
 (check-expect (render-bar 100 "right")
@@ -764,13 +772,13 @@
                 (rectangle 0 HAPPINESS-BAR-HEIGHT "solid" HAPPINESS-BAR-LOW-COLOR)
                 HAPPINESS-BG))
 
-;; --- tests Done - 快乐指数条 ---
+;; --- tests Done - Zoo 快乐指数条图像 ---
 
 
-;; === 渲染受控动物信息 ===
+;; === Zoo 焦点提示图像 ===
 
 ;; String -> Image
-;; 根据焦点键动态生成焦点提示文字
+;; 根据焦点键动态，生成焦点提示图像
 (define (focus-animal-status focus-key)
   (overlay
     (render-focus-msg focus-key)
@@ -783,7 +791,7 @@
     [(string=? focus-key "l") (text "变色龙:受控" FOCUS-ANIMAL-SIZE FOCUS-ANIMAL-COLOR)]
     [else empty-image]))
 
-;; --- tests -render-focus-msg ---
+;; --- tests -Zoo 焦点提示图像 ---
 
 ;; 测试焦点键
 (check-expect (render-focus-msg "k")
@@ -795,13 +803,13 @@
 ;; 测非焦点键
 (check-expect (render-focus-msg "x") empty-image)
 
-;; --- tests Done -render-focus-msg ---
+;; --- tests Done - Zoo 焦点提示图像 ---
 
 
-;; === 停止函数 ===
+;; === Zoo 游戏停止 ===
 
 ;; Zoo -> Boolean
-;; 实时判断游戏是不是停止?
+;; 判断游戏是不是停止?
 (define (game-over? state)
   (cond
     [(and
@@ -832,10 +840,10 @@
 ;; --- tests Done - 停止函数---
 
 
-;; === 游戏停止后的图像 ===
+;; === Zoo 游戏停止画面 ===
 
 ;; Zoo -> Image
-;; 游戏结束后，显示结束画面
+;; 生成结束画面
 (define (compose-end-scene state)
   (place-image
     END-MSG
@@ -843,25 +851,25 @@
     END-MSG-Y
     SCENE))
 
-;; --- tests ---
+;; --- tests 停止画面 ---
 
 (check-expect 
   (compose-end-scene (make-zoo (make-vcat 30 0 "right") (make-vcham 60 0 "red") "k"))
   (place-image END-MSG END-MSG-X END-MSG-Y SCENE))
 
-;; --- tests Done---
+;; --- tests Done 停止画面 ---
 
 
-;; === 猫状态更新函数 ===
+;; === 猫状态函数 ===
 
 ;; VCat -> VCat
-;; 实时更新猫下一位置、快乐值、方向的状态
+;; 计算 Vcat 状态
 (define (update-vcat vcat-state)
   (make-vcat (vcat-next-x vcat-state)
              (vcat-next-happiness vcat-state)
              (vcat-next-direction vcat-state)))
 
-;; --- tests-猫状态更新 ---
+;; --- tests-猫状态 ---
 ;; 向右行走的猫(该函数为组合函数，只需测试一个案例就可以了。)
 (check-expect
   (update-vcat (make-vcat 120 85 "right"))
@@ -869,20 +877,18 @@
              (- 85 CAT-HAPPINESS-FALL-SPEED)
              "right"))
 
-;; --- tests Done - 猫状态更新 ---
+;; --- tests Done - 猫状态 ---
 
-
-;; === 猫状态更新函数 - 辅助函数 ===
 
 ;; VCat -> Number
-;; 实时计算猫下一帧x坐标
+;; 计算 Vcat x 坐标
 (define (vcat-next-x vcat-state)
   (cond
     [(string=? (vcat-direction vcat-state) "right") (+ (vcat-x vcat-state) CAT-MOVE-SPEED)]
     [(string=? (vcat-direction vcat-state) "left") (- (vcat-x vcat-state) CAT-MOVE-SPEED)]
     [else (vcat-x vcat-state)]))
 
-;; --- tests - 猫下一帧 X ---
+;; --- tests - 猫 X 坐标 ---
 ;; 向右走，下一帧 X 值
 (check-expect
   (vcat-next-x (make-vcat 10 80 "right"))
@@ -896,11 +902,11 @@
 ;; else 语句
 ;; 防御语句，不必测试
 
-;; --- tests Done - 猫下一帧 X ---
+;; --- tests Done - 猫 X 坐标 ---
 
 
 ;; VCat -> Number
-;; 实时计算猫下一帧快乐值
+;; 计算猫快乐值
 (define (vcat-next-happiness vcat-state)
   (limit-happiness (- (vcat-happiness vcat-state) CAT-HAPPINESS-FALL-SPEED)))
 
@@ -914,7 +920,7 @@
 
 
 ;; VCat -> String
-;; 实时判断猫下一帧方向
+;; 计算猫方向
 (define (vcat-next-direction vcat-state)
   (cond
      [(and (string=? (vcat-direction vcat-state) "right") (>= (vcat-x vcat-state) SCENE-WIDTH)) "left"]
@@ -945,11 +951,10 @@
 ;; 防御语句，不必测试
 
 
-;; === 猫按键函数  ===
+;; === 猫按键 ===
 
 ;; VCat KeyEvent -> VCat
-;; 正确按键，返回计算后新值;
-;; 无关按键，返回输入的值。
+;; 根据按键事件，计算 Vcat 下一状态
 (define (handle-key-vcat vcat-state key)
   (cond
     ;; 按抚摸键(上箭头)
@@ -994,34 +999,34 @@
 ;; --- tests Done ---
 
 
-;; === 变色龙状态更新函数  ===
+;; === 变色龙状态  ===
 
 ;; VCham -> VCham
+;; 计算 Vcham 状态
 (define (update-vcham vcham-state)
   (make-vcham (vcham-next-x vcham-state)
               (vcham-next-happiness vcham-state)
               (vcham-color vcham-state)))
 
 
-;; --- tests - 变色龙状态更新 ---
+;; --- tests - 变色龙状态 ---
 ;; 向右行走的变色龙(该函数为组合函数，只需测试一个案例就可以了。)
 
 (check-expect
   (update-vcham (make-vcham 20 70 "red"))
   (make-vcham 21 69.85 "red"))
 
-;; --- tests Done - 变色龙状态更新 ---
+;; --- tests Done - 变色龙状态 ---
 
-
-;; === 变色龙状态更新函数 - 辅助函数 ===
 
 ;; VCham -> Number
-;; 实时计算变色龙下一帧x坐标 
+;; 计算变色龙 x 坐标 
 (define (vcham-next-x vcham-state)
   (modulo 
     (+ (vcham-x vcham-state) CHAM-MOVE-SPEED) SCENE-WIDTH))
 
 ;; --- tests - 下一帧x坐标 ---
+
 ;; x 值，顺原方向增加
 (check-expect 
   (vcham-next-x (make-vcham 50 100 "red"))
@@ -1036,7 +1041,7 @@
 
 
 ;; VCham -> Number
-;; 实时计算变色龙下一帧快乐值 
+;; 计算变色龙快乐值 
 (define (vcham-next-happiness vcham-state)
   (limit-happiness (- (vcham-happiness vcham-state) CHAM-HAPPINESS-FALL-SPEED)))
 
@@ -1048,10 +1053,9 @@
 ;; --- tests Done - 下一帧快乐值 ---
 
 
-;; === 变色龙按键函数  ===
+;; === 变色龙按键 ===
 ;; VCham KeyEvent -> VCham
-;; 正确按键，返回计算后新值;
-;; 无关按键，返回输入的值。
+;; 根据按键事件，计算变色龙状态
 (define (handle-key-vcham vcham-state key)
   (cond
     [(key=? key "down") (make-vcham (vcham-x vcham-state)
@@ -1062,7 +1066,7 @@
     [(key=? key "b") (make-vcham (vcham-x vcham-state) (vcham-happiness vcham-state) "blue")]
     [else vcham-state]))                                
 
-;; --- tests -变色龙按键函数 ---
+;; --- tests -变色龙按键事件 ---
 
 ;; 按喂食键(下箭头)，变色龙快乐指数 +2
 (check-expect
@@ -1096,14 +1100,16 @@
 ;; --- tests Done -变色龙按键函数 ---
 
 
-;; === 变色龙渲染函数  ===
+;; === 变色龙图像  ===
+
 ;; VCham -> Image
+;; 生成变色龙图像
 (define (render-cham-img vcham-state)
   (overlay
     CHAM-IMG
     (rectangle (image-width CHAM-IMG) (image-height CHAM-IMG) "solid" (vcham-color vcham-state))))
 
-;; --- tests -变色龙渲染函数 ---
+;; --- tests -变色龙图像 ---
 
 ;; 测试红色变色龙
 (check-expect
@@ -1126,7 +1132,7 @@
     CHAM-IMG
     (rectangle (image-width CHAM-IMG) (image-height CHAM-IMG) "solid" "blue")))
 
-;; --- tests Done -变色龙渲染函数 ---
+;; --- tests Done -变色龙图像 ---
 
 
 ;; === 程序启动 ===
