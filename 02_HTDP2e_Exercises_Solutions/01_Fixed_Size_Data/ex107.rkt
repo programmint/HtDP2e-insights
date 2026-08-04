@@ -485,7 +485,7 @@
 ;; === Zoo 游戏 ===
 
 ;; Zoo -> Zoo
-;; 启动 Zoo 游戏
+;; 从给定的 Zoo 状态，启动游戏
 (define (cham-and-cat state)
   (cond
     [(valid-zoo? state) (big-bang state
