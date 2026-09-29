@@ -11,6 +11,6 @@
 
 
 (cons "1" (cons "2" '()))  ; first 和 rest 完全符合数据定义
-(cons 2 '())  ; first 是 2，数值，不是 string ，所以不是  List-of-names 的元素。
+(cons 2 '())  ; first 是 2，数据类型是 Number，不是数据定义规定的：String ，所以不是  List-of-names 的元素。
 
 
